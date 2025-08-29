@@ -1,11 +1,18 @@
 ---
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
+
+
+
 # (PART) Get {-}
 # R basics
 This chapter provides a quick introduction to the programming language R and to using the software RStudio. 
+
+```{python}
+print("This is a test script")
+```
 
 ## Rstudio
 Rstudio is a software that allows to program in R and interactively analyse data with R. It succinctly organizes your session into 4 panels each set up for you to do certain tasks: Edit and write code (source panel), run and execute code (console panel), list objects that you have in your environment and have a history of your past commands (environment/history panel), and a panel to show your folders' structure, see plots, install/load packages, and read the documentation of functions (files/plots/packages/help panel).

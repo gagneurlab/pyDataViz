@@ -1,5 +1,5 @@
 --- 
-title: "Data Analysis and Visualization in R (IN2339)"
+title: "Data Analysis and Visualization in Python (IN2339)"
 author: |
   | Chair of Computational Molecular Medicine
   | Technical University of Munich
@@ -22,9 +22,9 @@ geometry: left=1.5in, right=1.5in, top=1.25in, bottom=1.25in
 description: This book introduces concepts and skills that can help you tackle
   real-world data analysis challenges. It covers concepts from probability, statistical
   inference, linear regression and machine learning and helps you develop skills such
-  as R programming, data wrangling with data.table, data visualization with ggplot2, file
+  as Python programming, data wrangling with polars, data visualization with plotnine, file
   organization with UNIX/Linux shell, version control with GitHub, and reproducible
-  document preparation with R markdown.
+  document preparation with Jupyter.
 site: bookdown::bookdown_site
 header-includes: \usepackage{float} \floatplacement{figure}{H}
 always_allow_html: yes
@@ -36,11 +36,19 @@ subtitle: A practical introduction to Data Science
 # automatically create a bib database for R packages
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'), 'packages.bib')
+
+library(reticulate)
+knitr::knit_engines$set(python = reticulate::eng_python)
+
 ```
+
+
+
 
 # Preface {-}
 
-This is the lecture script of the module Data Analysis and Visualization in R (IN2339).
+
+This is the lecture script of the module Data Analysis and Visualization in Python (IN2339).
 
 This work is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
@@ -49,6 +57,8 @@ This work is licensed under the [Creative Commons Attribution-NonCommercial-Shar
 This script has been first put together in the winter semester 2020/2021 by Felix Brechtmann, Alexander Karollus, Daniela Klaproth-Andrade, Pedro Silva, and Julien Gagneur with help from Xueqi Cao, Laura Martens, Ines Scheller, Vangelis Theodorakis, and Vicente Yépez.
 
 We leveraged work from colleagues who helped creating lecture slides since 2017: Žiga Avsec, Ines Assum, Daniel Bader, Jun Cheng, Bašak Eraslan, Mathias Heinig, Jan Krumsieck, Christian Mertes, and Georg Stricker.
+
+The script has been adapted from R to Python in the winter semester 2025/2026 by XXX.
 
 
 # Prerequisites {-}

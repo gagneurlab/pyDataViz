@@ -19,6 +19,10 @@ library(tidyr)
 
 ## Introduction
 
+```{python}
+print("This is some test codee")
+```
+
 ### Motivation
 
 In the last two chapters we introduced linear and logistic regression models. The primary motivation lied in the interpretation of the coefficients, seen as the effect of explanatory variables on the response adjusted for the effects of other, potentially correlated, variables. Under some assumptions this even allowed us -- holy grail -- to conclude about conditional independence. Often, these models were considered as interpretable data generative models, supposed to reflect the underlying process.

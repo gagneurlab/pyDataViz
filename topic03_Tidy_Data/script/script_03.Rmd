@@ -181,7 +181,8 @@ table2
 This operation, which transforms a long table into a wide table is called casting, following up with the metal forging analogy employed with the term "melting".
 
 Data table casting can be achieved using the `dcast()` function whose most frequent usage is:
-  ```{r, eval=FALSE}
+
+```{r, eval=FALSE}
 dcast(data, formula, value.var = guess(data))
 ```
 

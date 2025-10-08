@@ -12,3 +12,35 @@ pre {
 pre code {
   white-space: inherit;
 }
+
+
+
+/* 1) Style the sidebar 'part' headings (try multiple selectors to match Quarto versions) */
+.sidebar-item-section > .sidebar-item-container > .sidebar-item-text,
+.sidebar-item.part,
+.sidebar-part,
+.sidebar-section-title {
+  color: #6c757d !important;    /* gray text */
+  font-weight: 600;             /* slightly bolder */
+  opacity: 0.85;
+  pointer-events: none;         /* if you want them non-clickable like bookdown parts */
+}
+
+/* 2) Make links under parts a bit lighter (optional) */
+.sidebar-item {
+  color: #444;
+}
+
+/* 3) If Quarto renders the part text as a .sidebar-item-text that is also a link,
+   target only items that have no nested link to avoid graying real links */
+.sidebar-item-section > .sidebar-item-container > .sidebar-item-text.sidebar-link:not(.active) {
+  color: #6c757d !important;
+}
+
+/* 4) Improve spacing so parts visually separate groups */
+.sidebar-item-section {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(0,0,0,0.04);
+}

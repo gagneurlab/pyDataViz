@@ -1,47 +1,71 @@
---- 
+---
 title: "Data Analysis and Visualization in Python (IN2339)"
-author: |
-  | Chair of Computational Molecular Medicine
-  | Technical University of Munich
-date: "`r Sys.Date()`"
-output:
-  html_document:
-    df_print: paged
-documentclass: krantz
-bibliography:
-- book.bib
-- packages.bib
-biblio-style: apalike
-link-citations: yes
-colorlinks: yes
-lot: no
-lof: no
-graphics: yes
-urlcolor: blue
-geometry: left=1.5in, right=1.5in, top=1.25in, bottom=1.25in
-description: This book introduces concepts and skills that can help you tackle
+number-sections: false
+author: Chair of Computational Molecular Medicine Technical University of Munich
+
+subtitle: "A practical introduction to Data Science"
+description:
+  This book introduces concepts and skills that can help you tackle
   real-world data analysis challenges. It covers concepts from probability, statistical
   inference, linear regression and machine learning and helps you develop skills such
   as Python programming, data wrangling with polars, data visualization with plotnine, file
   organization with UNIX/Linux shell, version control with GitHub, and reproducible
   document preparation with Jupyter.
-site: bookdown::bookdown_site
-header-includes: \usepackage{float} \floatplacement{figure}{H}
-always_allow_html: yes
-subtitle: A practical introduction to Data Science
+bibliography:
+  - book.bib
+  - packages.bib
+# If you prefer a CSL file for a particular citation style, add:
+# csl: apa.csl
+
+
+# (PART) Get {-}
+# R basics
+
+# format:
+#   html:
+#     # built-in Bootswatch theme (cosmo, flatly, darkly, etc.)
+#     theme: cosmo
+#     # add a stylesheet for overrides
+#     # css: styles.css
+#     # table of contents for each page / book-level TOC
+#     toc: true
+#     toc-location: left
+#     toc-depth: 1
+#     # syntax highlighting (can supply one style or two: light/dark)
+#     highlight-style: github
+
+#   pdf:
+#     # documentclass, engine and small LaTeX injection
+#     documentclass: krantz
+#     pdf-engine: lualatex
+#     include-in-header:
+#       text: |
+#         \usepackage{float}
+#         \floatplacement{figure}{H}
+
+
+execute: 
+  kernel: dataviz
+
+date: "`{python} print('hello')`"
+
+
 ---
 
 
-```{r include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'), 'packages.bib')
 
-library(reticulate)
-knitr::knit_engines$set(python = reticulate::eng_python)
+<!-- ```{r include=FALSE}
+# # automatically create a bib database for R packages
+# knitr::write_bib(c(
+#   .packages(), 'bookdown', 'knitr', 'rmarkdown'), 'packages.bib')
 
-```
+# library(reticulate)
+# knitr::knit_engines$set(python = reticulate::eng_python)
 
+``` -->
+
+
+# Data Analysis and Visualization in Python (IN2339)
 
 
 

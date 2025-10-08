@@ -2,6 +2,10 @@ project:
   type: book
   output-dir: docs
 
+
+execute: 
+  kernel: dataviz
+
 # language:
 #   label:
 #     fig: "Figure "

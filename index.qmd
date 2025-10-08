@@ -65,9 +65,6 @@ date: "`{python} print('hello')`"
 ``` -->
 
 
-# Data Analysis and Visualization in Python (IN2339)
-
-
 
 # Preface {-}
 

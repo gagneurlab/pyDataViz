@@ -47,28 +47,35 @@ format:
     theme: cosmo
     toc: true
     toc-location: left
-    toc-depth: 1
+    toc-depth: 5
     highlight-style: github
     number-sections: true
+    number-depth: 3
+    page-layout: article
+    grid:
+      sidebar-width: 300px
+      body-width: 1200px
+      margin-width: 0px
+      gutter-width: 200px
 
-  pdf:
-    documentclass: krantz
-    biblio-style: apalike   # LaTeX bibliography style for PDF builds (natbib/biblatex)
-    geometry: "left=1.5in, right=1.5in, top=1.25in, bottom=1.25in"
-    colorlinks: true
-    urlcolor: blue
-    include-in-header:
-      text: |
-        \usepackage{float}
-        \floatplacement{figure}{H}
+  # pdf:
+  #   documentclass: krantz
+  #   biblio-style: apalike   # LaTeX bibliography style for PDF builds (natbib/biblatex)
+  #   geometry: "left=1.5in, right=1.5in, top=1.25in, bottom=1.25in"
+  #   colorlinks: true
+  #   urlcolor: blue
+  #   include-in-header:
+  #     text: |
+  #       \usepackage{float}
+  #       \floatplacement{figure}{H}
 
 
 book:
+  title: "Data Analysis and Visualization in Python"
   chapters:
-    - href: index.qmd
-    # - index.qmd
+    - index.qmd
     - topic00_Introduction/script/script_00.qmd
-    - part: "Get"
+    - part: "I Get"
       chapters: 
-        - topic01_R_Basics/script/script_01.qmd
+        - topic01_Python_Basics/script/script_01.qmd
 

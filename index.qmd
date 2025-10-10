@@ -1,5 +1,4 @@
 ---
-title: "Data Analysis and Visualization in Python (IN2339)"
 number-sections: false
 author: Chair of Computational Molecular Medicine Technical University of Munich
 
@@ -14,34 +13,6 @@ description:
 bibliography:
   - book.bib
   - packages.bib
-# If you prefer a CSL file for a particular citation style, add:
-# csl: apa.csl
-
-
-# (PART) Get {-}
-# R basics
-
-# format:
-#   html:
-#     # built-in Bootswatch theme (cosmo, flatly, darkly, etc.)
-#     theme: cosmo
-#     # add a stylesheet for overrides
-#     # css: styles.css
-#     # table of contents for each page / book-level TOC
-#     toc: true
-#     toc-location: left
-#     toc-depth: 1
-#     # syntax highlighting (can supply one style or two: light/dark)
-#     highlight-style: github
-
-#   pdf:
-#     # documentclass, engine and small LaTeX injection
-#     documentclass: krantz
-#     pdf-engine: lualatex
-#     include-in-header:
-#       text: |
-#         \usepackage{float}
-#         \floatplacement{figure}{H}
 
 
 execute: 
@@ -53,21 +24,7 @@ date: "`{python} print('hello')`"
 ---
 
 
-
-<!-- ```{r include=FALSE}
-# # automatically create a bib database for R packages
-# knitr::write_bib(c(
-#   .packages(), 'bookdown', 'knitr', 'rmarkdown'), 'packages.bib')
-
-# library(reticulate)
-# knitr::knit_engines$set(python = reticulate::eng_python)
-
-``` -->
-
-
-
-# Preface {-}
-
+# Data Analysis and Visualization in Python (IN2339) {.unnumbered}
 
 This is the lecture script of the module Data Analysis and Visualization in Python (IN2339).
 

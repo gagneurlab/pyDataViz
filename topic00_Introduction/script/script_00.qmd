@@ -1,12 +1,10 @@
 ---
-title: "Introduction"
 output:
   pdf_document: default
   html_document: default
 ---
 
-
-# Introduction {-}
+# Introduction  {.unnumbered}
 
 ## Data Science: What and why? {-}
 

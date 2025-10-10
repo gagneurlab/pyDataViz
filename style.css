@@ -1,3 +1,4 @@
+/* Basic Quarto code styling */
 p.caption {
   color: #777;
   margin-top: 10px;
@@ -13,34 +14,292 @@ pre code {
   white-space: inherit;
 }
 
+/* Reset default margins and padding */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Custom layout container with CSS Grid */
+.page-layout-custom {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sidebar styling - fixed 300px width, sticky position */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #f8f9fa 0%, #f1f3f4 100%);
+  border-right: 1px solid #dee2e6;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+  z-index: 1000;
+}
 
 
-/* 1) Style the sidebar 'part' headings (try multiple selectors to match Quarto versions) */
+
+
+/* Hide collapse/expand buttons for parts */
+.sidebar-item.part .sidebar-item-toggle,
+.sidebar-item-section .sidebar-item-toggle,
+.sidebar-part .sidebar-item-toggle {
+  display: none !important;
+}
+
+/* Ensure part sections are always expanded */
+.sidebar-item.part .sidebar-item-container,
+.sidebar-item-section .sidebar-item-container {
+  display: block !important;
+}
+
+/* Style the sidebar 'part' headings - Professional section headers */
 .sidebar-item-section > .sidebar-item-container > .sidebar-item-text,
 .sidebar-item.part,
 .sidebar-part,
 .sidebar-section-title {
-  color: #6c757d !important;    /* gray text */
-  font-weight: 600;             /* slightly bolder */
-  opacity: 0.85;
-  pointer-events: none;         /* if you want them non-clickable like bookdown parts */
+  color: #2d3748 !important;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  padding: 0.8rem 0;
+  background: none;
+  border: none;
+  border-bottom: 2px solid #e2e8f0;
+  box-shadow: none;
+  pointer-events: none;
+  position: relative;
 }
 
-/* 2) Make links under parts a bit lighter (optional) */
+.sidebar-item-section > .sidebar-item-container > .sidebar-item-text::after,
+.sidebar-item.part::after,
+.sidebar-part::after,
+.sidebar-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #6b7280 0%, #9ca3af 100%);
+}
+
+/* Chapter/page links styling - Professional gray links */
 .sidebar-item {
-  color: #444;
+  border-radius: 0;
+  margin: 0;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-/* 3) If Quarto renders the part text as a .sidebar-item-text that is also a link,
-   target only items that have no nested link to avoid graying real links */
-.sidebar-item-section > .sidebar-item-container > .sidebar-item-text.sidebar-link:not(.active) {
-  color: #6c757d !important;
+.sidebar-item .sidebar-item-text {
+  color: #4b5563;
+  font-weight: 400;
+  padding: 0.6rem 0;
+  border-radius: 0;
+  transition: all 0.3s ease;
+  display: block;
+  border-left: none;
+  background: none;
+  text-decoration: none;
+  position: relative;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
-/* 4) Improve spacing so parts visually separate groups */
+.sidebar-item .sidebar-item-text:hover {
+  background-color: transparent;
+  color: #1f2937;
+  border-left: none;
+  transform: translateX(3px);
+  box-shadow: none;
+  text-decoration: none;
+}
+
+/* Active page styling - Professional gray accent */
+.sidebar-item .sidebar-item-text.active {
+  background: none !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  border-left: 3px solid #51555c !important;
+  box-shadow: none !important;
+  transform: translateX(0px);
+  padding-left: 0.5rem;
+}
+
+/* Override any blue active states */
+.sidebar-item .sidebar-item-text.active,
+.sidebar-item.active .sidebar-item-text,
+.sidebar-item .sidebar-item-text[aria-current],
+.sidebar-item .sidebar-item-text[aria-current="page"] {
+  background: none !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  border-left: 3px solid #4b5563 !important;
+  border-color: #4b5563 !important;
+  box-shadow: none !important;
+}
+
+/* Nested items (subsections) - Refined hierarchy */
+.sidebar-item .sidebar-item .sidebar-item-text {
+  padding-left: 1.5rem;
+  font-size: 0.87rem;
+  font-weight: 400;
+  color: #9ca3af;
+  border-left: none;
+  background-color: transparent;
+  position: relative;
+}
+
+.sidebar-item .sidebar-item .sidebar-item-text:hover {
+  border-left: none;
+  background-color: transparent;
+  color: #6b7280;
+  transform: translateX(2px);
+}
+
+/* Professional content link styling - Override all blue links */
+a {
+  color: #4b5563 !important;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: #1f2937 !important;
+  text-decoration: underline !important;
+}
+
+a:visited {
+  color: #6b7280 !important;
+}
+
+/* More specific targeting for content areas */
+main.content a,
+.content a,
+article a,
+.page-layout-body a,
+#quarto-content a,
+.quarto-container a {
+  color: #444951 !important;
+  text-decoration: none !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+main.content a:hover,
+.content a:hover,
+article a:hover,
+.page-layout-body a:hover,
+#quarto-content a:hover,
+.quarto-container a:hover {
+  color: #1f2937 !important;
+  text-decoration: underline !important;
+}
+
+main.content a:visited,
+.content a:visited,
+article a:visited,
+.page-layout-body a:visited,
+#quarto-content a:visited,
+.quarto-container a:visited {
+  color: #6b7280 !important;
+}
+
+/* Code links should remain distinct */
+code a,
+pre a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+/* Section dividers - Subtle spacing */
 .sidebar-item-section {
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  border-top: 1px solid rgba(0,0,0,0.04);
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.sidebar-item-section:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* Elegant scrollbar styling for sidebar */
+.sidebar-navigation::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar-navigation::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+  border-radius: 3px;
+}
+
+.sidebar-navigation::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #9ca3af 0%, #6b7280 100%);
+  border-radius: 3px;
+}
+
+.sidebar-navigation::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #6b7280 0%, #4b5563 100%);
+}
+
+/* Responsive design for mobile devices */
+@media (max-width: 768px) {
+  .page-layout-custom {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  
+  .sidebar {
+    position: relative;
+    height: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .main-content {
+    grid-template-columns: 0.5fr 4fr 0.5fr;
+    padding: 1rem 0;
+  }
+  
+  .content-center {
+    padding: 1rem;
+  }
+  
+  .sidebar-item .sidebar-item-text {
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+  
+  .sidebar-navigation {
+    padding: 1rem 0.8rem;
+  }
+}
+
+/* Additional responsive breakpoint for tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-content {
+    grid-template-columns: 0.5fr 4fr 0.5fr;
+  }
+}
+
+/* Large screens - maintain the 1/5, 3/5, 1/5 ratio */
+@media (min-width: 1200px) {
+  .main-content {
+    grid-template-columns: 1fr 3fr 1fr;
+  }
+  
+  .content-center {
+    padding: 3rem;
+  }
 }

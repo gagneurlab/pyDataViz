@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Chair of Computational Molecular Medicine Technical University of Munich">
-<meta name="description" content="This book introduces concepts and skills that can help you tackle real-world data analysis challenges. It covers concepts from probability, statistical inference, linear regression and machine learning and helps you develop skills such as Python programming, data wrangling with polars, data visualization with plotnine, file organization with UNIX/Linux shell, version control with GitHub, and reproducible document preparation with Jupyter.">
 
-<title>Data Analysis and Visualization in Python</title>
+<title>Introduction – Data Analysis and Visualization in Python</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,25 +23,26 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./topic00_Introduction/script/script_00.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-87f2a376d176e4e5e755e23f537f413f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../topic01_Python_Basics/script/script_01.html" rel="next">
+<link href="../../index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-87f2a376d176e4e5e755e23f537f413f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -73,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../style.css">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -85,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Data Analysis and Visualization in Python (IN2339)</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../topic00_Introduction/script/script_00.html">Introduction</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -99,10 +98,10 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
+      <a href="../../index.html" class="sidebar-logo-link">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Data Analysis and Visualization in Python</a> 
+      <a href="../../">Data Analysis and Visualization in Python</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -114,13 +113,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Data Analysis and Visualization in Python (IN2339)</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./topic00_Introduction/script/script_00.html" class="sidebar-item-text sidebar-link">
+  <a href="../../topic00_Introduction/script/script_00.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
@@ -135,7 +134,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./topic01_Python_Basics/script/script_01.html" class="sidebar-item-text sidebar-link">
+  <a href="../../topic01_Python_Basics/script/script_01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python Basics for Data Science</span></span></a>
   </div>
 </li>
@@ -147,11 +146,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#data-analysis-and-visualization-in-python-in2339" id="toc-data-analysis-and-visualization-in-python-in2339" class="nav-link active" data-scroll-target="#data-analysis-and-visualization-in-python-in2339">Data Analysis and Visualization in Python (IN2339)</a></li>
-  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets">Datasets</a></li>
-  <li><a href="#feedback" id="toc-feedback" class="nav-link" data-scroll-target="#feedback">Feedback</a></li>
+  <li><a href="#data-science-what-and-why" id="toc-data-science-what-and-why" class="nav-link active" data-scroll-target="#data-science-what-and-why">Data Science: What and why?</a></li>
+  <li><a href="#what-you-will-learn-and-not-learn" id="toc-what-you-will-learn-and-not-learn" class="nav-link" data-scroll-target="#what-you-will-learn-and-not-learn">What you will learn and not learn</a></li>
+  <li><a href="#the-python-language" id="toc-the-python-language" class="nav-link" data-scroll-target="#the-python-language">The Python language</a></li>
+  <li><a href="#course-overview" id="toc-course-overview" class="nav-link" data-scroll-target="#course-overview">Course overview</a></li>
+  <li><a href="#complementary-reading" id="toc-complementary-reading" class="nav-link" data-scroll-target="#complementary-reading">Complementary reading</a></li>
   </ul>
 </nav>
 </nav>
@@ -164,32 +163,14 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Analysis and Visualization in Python</h1>
-<p class="subtitle lead">A practical introduction to Data Science</p>
+<h1 class="title">Introduction</h1>
 </div>
 
-<div>
-  <div class="description">
-    This book introduces concepts and skills that can help you tackle real-world data analysis challenges. It covers concepts from probability, statistical inference, linear regression and machine learning and helps you develop skills such as Python programming, data wrangling with polars, data visualization with plotnine, file organization with UNIX/Linux shell, version control with GitHub, and reproducible document preparation with Jupyter.
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Chair of Computational Molecular Medicine Technical University of Munich </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">Invalid Date</p>
-    </div>
-  </div>
   
     
   </div>
@@ -199,33 +180,47 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="data-analysis-and-visualization-in-python-in2339" class="level1 unnumbered">
-<h1 class="unnumbered">Data Analysis and Visualization in Python (IN2339)</h1>
-<p>This is the lecture script of the module Data Analysis and Visualization in Python (IN2339).</p>
-<div class="book-callout">
-<p><strong>Note — work in progress</strong></p>
-<p>This book is an <em>adaptation</em> to the programming language <em>Python</em> of the original script <a href="https://gagneurlab.github.io/dataviz/">Data Analysis and Visualization in R</a> and is still under development. Chapters will be added in order. For any content not yet implemented, please refer to the original.</p>
-</div>
-<p>This work is licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a></p>
+<section id="data-science-what-and-why" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="data-science-what-and-why">Data Science: What and why?</h2>
+<p>Data science is an interdisciplinary field about processes and systems to extract knowledge or insights from data. The goals of Data Science include discovering new phenomena or trends from data, enabling decisions based on facts derived from data, and communicating findings from data. It is a continuation of some of the data analysis fields such as statistics, data mining, and predictive analytics.</p>
+<p>Data Science is at the heart of the scientific method, which starts with making data-driven observations to formulate testable hypotheses. It furthermore comes into play to visualize and assess experimental results. Data science skills are therefore necessary to any field of scientific research. Data science is the main tools of epidemiology, the study of health and disease in populations, which largely relies on observational data. Moreover data science is important in the industry, to understand operational process, and in business analytics, to understand a particular market. Hence, with the rise of big data in all areas of society, data science skills are some of the most demanded skills on the job market. Last, but not least, in an era of fake news, data science skills are important for citizens of modern societies.</p>
 </section>
-<section id="acknowledgments" class="level1 unnumbered">
-<h1 class="unnumbered">Acknowledgments</h1>
-<p>This script has been first put together in the winter semester 2020/2021 by Felix Brechtmann, Alexander Karollus, Daniela Klaproth-Andrade, Pedro Silva, and Julien Gagneur with help from Xueqi Cao, Laura Martens, Ines Scheller, Vangelis Theodorakis, and Vicente Yépez.</p>
-<p>We leveraged work from colleagues who helped creating lecture slides since 2017: Žiga Avsec, Ines Assum, Daniel Bader, Jun Cheng, Bašak Eraslan, Mathias Heinig, Jan Krumsieck, Christian Mertes, and Georg Stricker.</p>
-<p>The script has been adapted from R to Python in the winter semester 2025/2026 by XXX.</p>
+<section id="what-you-will-learn-and-not-learn" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="what-you-will-learn-and-not-learn">What you will learn and not learn</h2>
+<p>The goal of this course is to provide you with general analytic techniques to extract knowledge, patterns, and connections between samples and variables, and how to communicate these in an intuitive and clear way.</p>
+<p>This course focuses on front-end data science. This means, it teaches practical skills to analyse data. We will focus on tidy data, visualizations, and data manipulation in Python. To only then dive into the math required to understand and interpret analysis results.</p>
+<p>This course does not teach back-end data science, i.e.&nbsp;it does not teach how to develop your own statistical or machine learning models, nor how to develop scalable data processing software.</p>
+<p>Other courses offered by the faculty of Informatics cover data science back-end skills.</p>
 </section>
-<section id="prerequisites" class="level1 unnumbered">
-<h1 class="unnumbered">Prerequisites</h1>
-<p>Basics in probabilities are required. Chapters 13-15 (“Introduction to Statistics with R”, “Probability” and “Random variables”) of the Book “Introduction to Data Science” https://rafalab.github.io/dsbook/ make a good refresher. Make sure all concepts are familiar to you. Check your knowledge by trying the exercises.</p>
+<section id="the-python-language" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="the-python-language">The Python language</h2>
+<p>Python is a versatile high-level programming language used intensively for data analytics and machine learning. It is a great language for front-end data science, i.e.&nbsp;to rapidly manipulate, visualize and come to raising interesting hypotheses.</p>
+<p>But thanks to its versatility, even complicated back-end software, such as deep-learning models, can be designed and maintained with Python. There is always a trade-off between abstraction from the computer language — i.e., legibility for humans — and the efficiency of programming languages. As Python is a high-level language, its purpose is to reduce time spent coding and to maximize users’ time looking at and thinking about the data, rather than minimizing the computer’s running time. Because researchers and data analysts often need to make quick, effective analyses and usually don’t have time to optimize low-level code, Python offers an ideal compromise between these two worlds.</p>
+<!-- R is a statistical programming language designed for data analytics. It is a great language for front-end data science, i.e. to rapidly manipulate, visualize and come to raising interesting hypotheses.  -->
+<!-- Seen from a software developer point of view (i.e. from a back-end data science point of view), R can be seen cumbersome and not using memory and computing resources efficiently. The purpose of the R language is to reduce time spent in coding to maximize user's brain time on looking at the data and thinking about it, rather than reducing computer's running time. Of course, there are ways to develop efficient R software, notably by relying on implementation in lower languages such as C. This course does not cover such R developer skills.  -->
+<!-- Another advantage of R is that it offers a very large set of libraries from many application areas. -->
 </section>
-<section id="datasets" class="level1 unnumbered">
-<h1 class="unnumbered">Datasets</h1>
-<p>Datasets used in this script are available to download as a compressed file <a href="http://shorturl.at/otwxO">here</a>.</p>
+<section id="course-overview" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="course-overview">Course overview</h2>
+<p>The lecture is structured into three main parts covering the major steps of data analysis:</p>
+<ol type="1">
+<li><p><strong>Get the data</strong>: After basic introduction to Python, learn how to fetch and manipulate real-world datasets. How to structure them to most conveniently work with them (tidy data).</p></li>
+<li><p><strong>Look at the data</strong>: Basic and advanced visualization techniques allows navigating large and complex datasets, identifying interesting signal, and formulating hypotheses. Typical sources of confounding are discussed. Recommendation to present an analysis in compelling fashion are also given.</p></li>
+<li><p><strong>Conclude</strong>: Concepts of hypothesis testing will allow concluding about the statistical robustness of discovered associations. Also, methods from supervised learning will allow to model data and build accurate predictors.</p></li>
+</ol>
+<p>The chapters of this script corresponds to individual lectures. Appendices provide further technical details as well as Python tricks and tips.</p>
 </section>
-<section id="feedback" class="level1 unnumbered">
-<h1 class="unnumbered">Feedback</h1>
-<p>For improvement suggestions, reporting errors and typos, please use the online document <a href="https://docs.google.com/document/d/1tdWmtkDaNUnQLkG_cNfJ2KLHwnaldtQwZh6pUQh8Mpc/edit?usp=sharing">here</a>.</p>
-<!-- Latex commands -->
+<section id="complementary-reading" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="complementary-reading">Complementary reading</h2>
+<p>— TODO —</p>
+<p>These books offer complementary information to this script:</p>
+<ul>
+<li><p>Introduction to Data Science, Rafael A. Irizarry [https://rafalab.github.io/dsbook/]</p></li>
+<li><p>R for Data Science, Garrett Grolemund and Hadley Wickham [https://r4ds.had.co.nz/]</p></li>
+<li><p>Statistical Inference via Data Science, Chester Ismay and Albert Y. Kim [https://moderndive.com/]</p></li>
+<li><p>Fundamentals of Data Visualization, Claus O. Wilke [https://clauswilke.com/dataviz/]</p></li>
+<li><p>Advanced R, Hadley Wickham [https://adv-r.hadley.nz/]</p></li>
+</ul>
 
 
 </section>
@@ -633,10 +628,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../../index.html" class="pagination-link" aria-label="Data Analysis and Visualization in Python (IN2339)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Data Analysis and Visualization in Python (IN2339)</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./topic00_Introduction/script/script_00.html" class="pagination-link" aria-label="Introduction">
-        <span class="nav-page-text">Introduction</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../topic01_Python_Basics/script/script_01.html" class="pagination-link" aria-label="Python Basics for Data Science">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python Basics for Data Science</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

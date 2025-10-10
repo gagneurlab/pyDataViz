@@ -9,3 +9,7 @@ extdata/*
 
 /.quarto/
 **/*.quarto_ipynb
+
+# macOS
+.DS_Store
+**/.DS_Store

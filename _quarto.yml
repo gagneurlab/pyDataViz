@@ -78,4 +78,6 @@ book:
     - part: "I Get"
       chapters: 
         - topic01_Python_Basics/script/script_01.qmd
+        - topic02_Data_Wrangling/script/script_02.qmd
+        - topic04_Plotting-I/script/script_04.qmd
 

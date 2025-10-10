@@ -239,6 +239,30 @@ Mapping of aesthetics in `aes()` can be done globally or at individual layers. G
 (ggplot(gm_df, aes(x='gdpPercap', y='lifeExp')) + geom_point(aes(color='continent', size='pop')))
 ```
 
+Note that individual layer mapping cannot be recognized by other layers. For instance, we can add another layer for smoothing with `stat_smooth()`.
+
+```{python}
+#| eval: false
+# this doesn't work as stat_smooth didn't know aes(x , y)
+(ggplot(gm_df) +
+  geom_point(aes(x='gdpPercap', y='lifeExp')) +
+  stat_smooth(color='blue'))
+```
+```{python}
+#| fig-align: "center"
+# this works but is redundant
+(ggplot(gm_df) +
+  geom_point(aes(x='gdpPercap', y='lifeExp')) +
+  stat_smooth(aes(x='gdpPercap', y='lifeExp'), color='blue'))
+```
+```{python}
+#| fig-align: "center"
+# the common aes(x, y) shared by all the layers can be put in the ggplot()
+(ggplot(gm_df, aes(x='gdpPercap', y='lifeExp')) +
+  geom_point() +
+  stat_smooth(color='blue'))
+```
+
 ### Facets, axes and labels
 
 For comparing the data from different years, we can add a facet with `facet_wrap()`:

@@ -9,10 +9,9 @@ execute:
   echo: true
   fig-height: 3
   fig-width: 4
+  warning: false
 
 ---
-
-# Low dimensional visualizations
 
 ```{python}
 #| include: false

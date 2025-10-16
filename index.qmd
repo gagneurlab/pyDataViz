@@ -28,12 +28,12 @@ date: "`{python} print('hello')`"
 
 This is the lecture script of the module Data Analysis and Visualization in Python (IN2339).
 
-::: {.book-callout}
-**Note — work in progress**
 
-This book is an *adaptation* to the programming language *Python* of the original script [Data Analysis and Visualization in R](https://gagneurlab.github.io/dataviz/)  and is still under development. Chapters will be added in order. For any content not yet implemented, please refer to the original.
-:::
 
+<div class="callout-box info">
+  <p><strong>Note — work in progress</strong><br>
+  This book is an adaptation to the programming language **Python** of the original script <em><u>[Data Analysis and Visualization in R](https://gagneurlab.github.io/dataviz/)</u></em> and is still under development. Chapters will be added in order. For any content not yet implemented, please refer to the original. Theoretical concepts are identical, only the programming language is changed.</p>
+</div>
 
 This work is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
@@ -43,7 +43,7 @@ This script has been first put together in the winter semester 2020/2021 by Feli
 
 We leveraged work from colleagues who helped creating lecture slides since 2017: Žiga Avsec, Ines Assum, Daniel Bader, Jun Cheng, Bašak Eraslan, Mathias Heinig, Jan Krumsieck, Christian Mertes, and Georg Stricker.
 
-The script has been adapted from R to Python in the winter semester 2025/2026 by XXX.
+The script has been adapted from R to Python in the winter semester 2025/2026 by Xavi Hernandez Alias, Eva Holtkamp, Shubhankar Londhe, Johann Promeuschel, Maria Ryabtseva and Anna Starovoit
 
 
 # Prerequisites {-}

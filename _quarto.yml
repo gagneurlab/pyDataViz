@@ -36,8 +36,8 @@ execute:
 #         \usepackage{float}
 #         \floatplacement{figure}{H}
 
-# bibliography:
-#   - book.bib
+bibliography:
+  - book.bib
 #   - packages.bib
 
 format:
@@ -79,5 +79,6 @@ book:
       chapters: 
         - topic01_Python_Basics/script/script_01.qmd
         - topic02_Data_Wrangling/script/script_02.qmd
+        - topic03_Tidy_Data/script/script_03.qmd
         - topic04_Plotting-I/script/script_04.qmd
 

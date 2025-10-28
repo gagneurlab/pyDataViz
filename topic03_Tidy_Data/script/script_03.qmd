@@ -1,14 +1,11 @@
 ---
-title: "Data Wrangling"
+title: "Tidy data and combining tables"
 execute: 
   kernel: dataviz
+  warning: false
 
 format: html
 # jupyter: python3
-
-header-includes:
-  - \setbeamerfont{section title}{size=\Large} 
-  - \usepackage{float} \floatplacement{figure}{H} 
 ---
 ```{python}
 #| echo: false
@@ -29,23 +26,28 @@ datadir = "../../extdata/"
 ### Motivation
 Without good practices, much of the time of a data analyst can be wasted in data wrangling rather than visualization or analysis. The concept of tidy data [@Wickham2014] addresses this issue by offering a standard representation of data, that is easy to manipulate, model and visualize. This chapter introduces the notion of tidy data and operations for tidying up messy datasets. Moreover, we describe how to easily concatenate tables with the same format and merge tables with common variables. This will set us ready for data visualization and analytics.
 
-This chapter is partially adopted from "Introduction to Data Science" by Rafael A. Irizarry (https://rafalab.github.io/dsbook/) and uses concepts and material introduced by the developers of the `tidyr` package.
+This chapter is partially adopted from "Introduction to Data Science" by Rafael A. Irizarry (<https://rafalab.github.io/dsbook/>).
+<!-- and uses concepts and material introduced by the developers of the `tidyr` package. -->
 
 ### Datasets used in this chapter
 
 The following code chunks load libraries and tables used throughout this chapter.
 
-```{python, echo=TRUE, warning=FALSE}
+```{python}
+#| echo: true
+#| warning: false
+
 import pandas as pd
-from plotnine import *
+import numpy as np
 from pathlib import Path
 import glob
-import numpy as np
-# from pprint import pprint
 ```
 
-```{python echo=TRUE, warning=FALSE}
-DATADIR = Path('extdata')
+```{python}
+#| echo: true
+#| warning: false
+
+DATADIR = Path('../../extdata')
 election_results = pd.read_csv(DATADIR / 'US-pres16results.csv')
 election_results = (
     election_results
@@ -69,7 +71,7 @@ table5 = pd.read_csv(DATADIR / 'table5_alternate.csv')
 
 ### Definition of tidy data
 
-![**Tidy data table layout.** Each variable has a column, each observation a row and each value a cell.](assets/img/lec05_tidy-1_alternate.png)
+![**Tidy data table layout.** Each variable has a column, each observation a row and each value a cell.](../../assets/img/lec05_tidy-1_alternate.png)
 
 
 We say that a data table is in  _tidy_ format if:
@@ -81,7 +83,9 @@ We say that a data table is in  _tidy_ format if:
 The following dataset from the 2016 US presidential vote^[https://www.kaggle.com/stevepalley/2016uspresidentialvotebycounty?select=pres16results.csv] is an example of a tidy dataset:
 
 
-```{python, echo=FALSE, warning=FALSE}
+```{python}
+#| echo: false
+#| warning: false
 election_results.head()
 ```
 
@@ -105,7 +109,7 @@ Often, untidy datasets can be identified by one or more of the following issues 
 * A single observational unit is stored in multiple tables
 
 @Wickham2014 furthermore mentions "Multiple types of observational units stored in the same table" as a sign of untidy data.
-This point is discussed in Section \@ref(tidy-not-unique). 
+This point is discussed in @sec-tidy-not-unique. 
 
 <!-- We will show this advantages with the following example: -->
 
@@ -145,7 +149,7 @@ In this part of the chapter, we show how to transform untidy datasets into tidy 
 
 ### Melting (wide to long)
 
-One of the most used operations to obtain tidy data is to transform a `wide` table into a `long` table. This operation is called melting, by analogy with `melting` a piece of metal. It is useful in particular when data is untidy because column headers are values, and not variable names.
+One of the most used operations to obtain tidy data is to transform a wide table into a long table. This operation is called melting, by analogy with melting a piece of metal. It is useful in particular when data is untidy because column headers are values, and not variable names.
 
 As an example, consider the table below which reports vote counts for two US states, California and Florida. In this table, the column names CA and FL are values of the variable *state*. Therefore, we can say that this table is in an untidy format:
 
@@ -153,12 +157,15 @@ As an example, consider the table below which reports vote counts for two US sta
 table4
 ```
 
-![Melting the election dataset](assets/img/lec05_tidy-gather_alternate.png)
+![Melting the election dataset](../../assets/img/lec05_tidy-gather_alternate.png)
 Melting the previous table can be achieved by using the __pandas__ method `melt()`:
 
 ```{python}
-pd.melt(table4, id_vars = "candidate", value_vars = ['CA', 'FL'],
-     var_name = "state", value_name = "votes")
+pd.melt(table4, 
+        id_vars = "candidate", 
+        value_vars = ['CA', 'FL'],
+        var_name = "state", 
+        value_name = "votes")
 ```
 
 <!-- TODO maybe drop this?  -->
@@ -166,9 +173,9 @@ We note that the previous code snippet would also work without explicitly specif
 If `value_vars` is omitted, pandas will melt all columns not listed in id_vars —or all columns if `id_vars` is also not provided.
 Conversely, if `id_vars` is omitted (and only value_vars is given), pandas will include only the columns defined in `value_vars`, resulting in an output that contains just the `var_name` and `value_name` columns.
 
-When melting, all values in the columns specified by the `value_vars` argument are **gathered into one column** with the name specified in the `var_name` argument. 
+When melting, all values in the columns specified by the `value_vars` argument are gathered into one column with the name specified in the `var_name` argument. 
 
-Additionally, a new column with the name in the `value_name` argument is created **containing all values** which were previously stored in the `value_vars` **column names**.
+Additionally, a new column with the name in the `value_name` argument is created containing all values which were previously stored in the `value_vars` column names.
 
 After melting, we have a table in a tidy format where a row represents the number of votes for a candidate in a state. The new table also makes clear that the quantities are numbers of votes thanks to the column name.
 
@@ -181,24 +188,25 @@ table2
 ```
 
 
-![Casting the election dataset](assets/img/lec05_tidy-spread_alternate.png)
+![Casting the election dataset](../../assets/img/lec05_tidy-spread_alternate.png)
 
 This operation, which transforms a long table into a wide table is called casting, following up with the metal forging analogy employed with the term "melting".
 
 Pandas **pivot** transforms a long table into a wide table and is achieved with the `pivot` method whose most frequent usage is:
 
-```{python, eval=FALSE}
+```{python}
+#| eval: false
 wide = data.pivot(index=['<id>'], columns='<category>', 
 values='<value>').reset_index()
 ```
 
-The .pivot() method requires specifying three key arguments: `index`, `columns`, and `values`.
+The `.pivot()` method requires specifying three key arguments: `index`, `columns`, and `values`.
 
 - `columns`: Specifies which column in the original (long) table contains the categories that will become the names of the new columns in the wide table.
 
 - `values`: Refers to the column from which the data values should be extracted to populate the cells under the new wide columns.
 
-- `index`: Specifies the column(s) that should form the new row indices (keys) of the wide table. (Note: Using reset_index() is necessary after the pivot to turn these indices back into regular columns.)
+- `index`: Specifies the column(s) that should form the new row indices (keys) of the wide table. (Note: Using `reset_index()` is necessary after the pivot to turn these indices back into regular columns.)
 
 The call then is:
 
@@ -213,7 +221,7 @@ table2.pivot(
 
 <!-- The function `dcast` has many more arguments. Also the formula can allow for more sophisticated ways to handle the columns. We refer to the "datatable-reshape" vignette (see section Resources) and the help of `dcast()` for more details.  -->
 
-### Separating columns
+### Splitting columns
 
 Sometimes single variables can be spread across multiple columns as in the following table.
 
@@ -232,10 +240,10 @@ table3[["votes", "total_votes"]] = table3["proportion"] \
 table3
 ```
 
-![Separated election dataset](assets/img/lec05_tidy-separate_alternate.png)
+![Separated election dataset](../../assets/img/lec05_tidy-separate_alternate.png)
 The drawing above visualizes the operation performed above.
 
-### Uniting columns
+### Combining columns
 
 In this example the first and last names are separated columns without a real need for it (we will not be interested in computing any statistics over all Hillary's):
 
@@ -250,7 +258,7 @@ table5["candidate"] = table5["name"] + " " + table5["surname"]
 ```
 
 
-![United election dataset](assets/img/lec05_tidy-unite_alternate.png)
+![United election dataset](../../assets/img/lec05_tidy-unite_alternate.png)
 
 
 ### Advanced: Columns containing sets of values
@@ -258,13 +266,13 @@ table5["candidate"] = table5["name"] + " " + table5["surname"]
 Kaggle, a machine learning platform, conducts a yearly survey among its users. Below are a few columns of the answers from the 2017 survey. In those columns, we observe another type of untidy data. In this survey, multiple choice questions were asked from which multiple answers could be selected. For each individual the selected answers are concatenated into a string.
 
 ```{python}
-survey = pd.read_csv('extdata/kaggle-survey-2017/multipleChoiceResponses.csv')
+survey = pd.read_csv(DATADIR / 'kaggle-survey-2017/multipleChoiceResponses.csv', encoding='latin-1')
 survey[['LanguageRecommendationSelect', 'LearningPlatformSelect', 'PastJobTitlesSelect']].head()
 ```
 
 
 
-Below is one solution of how the `LearningPlatformSelect` column could be transformed into a tidy format. We make use here of the handy pipe operator denoted `%>%` from the  `magrittr` package (See Appendix \@ref(pipe)).
+Below is one solution of how the `LearningPlatformSelect` column could be transformed into a tidy format.
 
 ```{python}
 platform_splits = survey['LearningPlatformSelect'].str.split(',', expand=True)
@@ -286,18 +294,16 @@ For instance, assume a service generates a new file of data per day in a given d
 
 Here is an example with daily COVID-19 data. We first get all file names of the directory into a character vector called `files`:
 
-```{python, show = TRUE, eval=FALSE}
-files = glob.glob('path_to_your_directory')
-```
-```{python, show = FALSE, echo=TRUE}
-files = glob.glob("../../extdata/cov_concatenate/*")
+```{python}
+#| echo: true
+#| show: false
+files = glob.glob(f"{DATADIR}/cov_concatenate/*")
 files[:5]
 ```
 
 
-Next, we load all file contents with `pd.read_csv` using a dictionary comprehension, which returns a dictiionary of `DataFrames` with filenames as the keys. 
+Next, we load all file contents with `pd.read_csv` using a dictionary comprehension, which returns a dictionary of `DataFrames` with filenames as the keys. 
 ```{python}
-from pathlib import Path
 tables = {Path(f).name: pd.read_csv(f) for f in files}
 ```
 
@@ -324,7 +330,9 @@ df.head()
 
 Merging two data tables into one by common column(s) is frequently needed. This can be achieved using the `merge` method whose core signature is:
 
-```{python, eval=F}
+```{python}
+#| eval: false
+
 df.merge(y, # tables to merge
         how = 'left', # type of merge
         on=None, left_on=None, right_on=None # by which columns
@@ -333,9 +341,9 @@ df.merge(y, # tables to merge
 
 The four types of merges (also commonly called joins) are:
 
-* **Inner (default)**: consider only rows with matching values in the `by` columns.
+* **Inner (default)**: consider only rows with matching values in the `on` columns.
 
-* **Outer or full (all)**: return all rows and columns from `x` and `y`. If there are no matching values, return NAs.
+* **Outer or full (all)**: return all rows and columns from `x` and `y`. If there are no matching values, return NaNs.
 
 * **Left (all.x)**: consider all rows from `x`, even if they have no matching row in `y`.
 
@@ -348,35 +356,26 @@ df1 = pd.DataFrame({
     'p_id': ['G008', 'F027', 'L051'],
     'value': np.random.normal(size=3)
 })
-df1.head(2)
-
+display(df1.head)
 df2 = pd.DataFrame({
     'p_id': ['G008', 'F027', 'U093'],
     'country': ['Germany', 'France', 'USA']
 })
-df2.head(2)
+df2.head()
 ```
 
 ### Inner merge
 
-An inner merge returns only rows with matching values in the `by` columns and discards all other rows:
+An inner merge returns only rows with matching values in the `on` columns and discards all other rows:
 ```{python}
 # Inner merge, default one, all = FALSE
 m = df1.merge(df2, on='p_id', how='inner')
 m
 ```
 
-<!-- Note that the row order got changed after the merging. To prevent this and, therefore, to keep the original ordering we can use the argument `sort` and set it to `FALSE`: 
-
-```{python}
-m <- merge(dt1, dt2, by = "p_id", all = FALSE, sort = FALSE)
-m
-``` -->
-
-<!-- Note that the column order is preserved after merging. -->
 
 ### Outer (full) merge
-An outer merge returns all rows and columns from `x` and `y`. If there are no matching values in `p_id`, it yields missing values (`NA`):
+An outer merge returns all rows and columns from `x` and `y`. If there are no matching values in `p_id`, it yields missing values (`NaN`):
 
 ```{python}
 # Outer (full) merge
@@ -385,7 +384,7 @@ m
 ```
 
 ## Left merge
-Returns all rows from `x`, even if they have no matching row in `y`. Rows from `x` with no matching `p_id` in `y` lead to missing values (`NA`).
+Returns all rows from `x`, even if they have no matching row in `y`. Rows from `x` with no matching `p_id` in `y` lead to missing values (`NaN`).
 ```{python}
 # Left merge 
 m = df1.merge(df2, on='p_id', how='left')
@@ -394,7 +393,7 @@ m
 
 
 ## Right merge
-Returns all rows from `y`, even if they have no matching row in `x`. Rows from `y` with no matching `p_id` in `x` lead to missing values (`NA`).
+Returns all rows from `y`, even if they have no matching row in `x`. Rows from `y` with no matching `p_id` in `x` lead to missing values (`NaN`).
 ```{python}
 # Right merge
 m = df1.merge(df2, on='p_id', how='right')
@@ -410,14 +409,14 @@ df1 = pd.DataFrame({
     'lastname':  ['Coop',  'Smith', 'Smith'],
     'x': [1, 2, 3]
 })
-df1.head(2)
+display(df1.head())
 
 df2 = pd.DataFrame({
     'firstname': ['Alice', 'Bob',   'Bob'],
     'lastname':  ['Coop',  'Marley','Smith'],
     'y': list('ABC')
 })
-df2.head(2)
+df2.head()
 ```
 
 We now merge `df1` and `df2` by first name and last name:
@@ -434,16 +433,19 @@ df1.merge(df2, on='firstname')
 
 Also notice that in this case the merge tables has a column `lastname_x` and a column `lastname_y`. This is because the two original data tables have a column named the same way ("lastname"), but this column was not part of the "by" argument. Hence, it is assumed that they do not necessarily correspond to the same variable. Hence, they receive distinct names in the returned table. 
 
-## Tidy representations are not unique {#tidy-not-unique}
+## Tidy representations are not unique {#sec-tidy-not-unique}
 While untidy data should be avoided, there can be multiple tidy representations for a particular dataset. We explain this regarding i) alternative forms of a single table and ii) the practical utility of non-normalized representations (i.e. with redundant information). 
 
 ### Alternative tidy forms of a table
 There can be alternative tidy representations for a same table.
 Here is an example based on Fisher's Iris dataset. This classic dataset contains measurements of 4 different attributes for 150 iris flowers from 3 different species. See <https://en.wikipedia.org/wiki/Iris_flower_data_set>.
 
-```{python echo=F, fig.show = "hold", out.width = "40%", fig.align = "center", fig.pos='H'}
-knitr::include_graphics("assets/img/lec03_iris.png")
-```
+<!-- ```{python echo=F, fig.show = "hold", out.width = "40%", fig.align = "center", fig.pos='H'}
+knitr::include_graphics("../../assets/img/lec03_iris.png")
+``` -->
+
+![Iris](../../assets/img/lec03_iris.png)
+
 
 ```{python, echo = F}
 from sklearn import datasets
@@ -505,7 +507,7 @@ prod_df[['customerNumber', 'customerName', 'state']].drop_duplicates()
 
 * a product table:
 ```{python, echo = F, results = T}
-prod_df[['productCode', 'price']].drop_duplicates()
+prod_df[['productCode', 'priceEach']].drop_duplicates()
 ```
 
 * an order table:

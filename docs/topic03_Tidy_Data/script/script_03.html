@@ -1,0 +1,2424 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Tidy data and combining tables – Data Analysis and Visualization in Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../topic04_Plotting-I/script/script_04.html" rel="next">
+<link href="../../topic02_Data_Wrangling/script/script_02.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-87f2a376d176e4e5e755e23f537f413f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../topic01_Python_Basics/script/script_01.html">I Get</a></li><li class="breadcrumb-item"><a href="../../topic03_Tidy_Data/script/script_03.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tidy data and combining tables</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../../index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Data Analysis and Visualization in Python</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Analysis and Visualization in Python (IN2339)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../topic00_Introduction/script/script_00.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">I Get</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../topic01_Python_Basics/script/script_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python Basics for Data Science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../topic02_Data_Wrangling/script/script_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Wrangling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../topic03_Tidy_Data/script/script_03.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tidy data and combining tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../topic04_Plotting-I/script/script_04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Low dimensional visualizations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">3.1</span> Introduction</a>
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation"><span class="header-section-number">3.1.1</span> Motivation</a></li>
+  <li><a href="#datasets-used-in-this-chapter" id="toc-datasets-used-in-this-chapter" class="nav-link" data-scroll-target="#datasets-used-in-this-chapter"><span class="header-section-number">3.1.2</span> Datasets used in this chapter</a></li>
+  </ul></li>
+  <li><a href="#tidy-and-untidy-data" id="toc-tidy-and-untidy-data" class="nav-link" data-scroll-target="#tidy-and-untidy-data"><span class="header-section-number">3.2</span> Tidy and untidy data</a>
+  <ul>
+  <li><a href="#definition-of-tidy-data" id="toc-definition-of-tidy-data" class="nav-link" data-scroll-target="#definition-of-tidy-data"><span class="header-section-number">3.2.1</span> Definition of tidy data</a></li>
+  <li><a href="#advantages-of-tidy-data" id="toc-advantages-of-tidy-data" class="nav-link" data-scroll-target="#advantages-of-tidy-data"><span class="header-section-number">3.2.2</span> Advantages of tidy data</a></li>
+  <li><a href="#common-signs-of-untidy-datasets" id="toc-common-signs-of-untidy-datasets" class="nav-link" data-scroll-target="#common-signs-of-untidy-datasets"><span class="header-section-number">3.2.3</span> Common signs of untidy datasets</a></li>
+  </ul></li>
+  <li><a href="#tidying-up-datasets" id="toc-tidying-up-datasets" class="nav-link" data-scroll-target="#tidying-up-datasets"><span class="header-section-number">3.3</span> Tidying up datasets</a>
+  <ul>
+  <li><a href="#melting-wide-to-long" id="toc-melting-wide-to-long" class="nav-link" data-scroll-target="#melting-wide-to-long"><span class="header-section-number">3.3.1</span> Melting (wide to long)</a></li>
+  <li><a href="#pivoting-long-to-wide" id="toc-pivoting-long-to-wide" class="nav-link" data-scroll-target="#pivoting-long-to-wide"><span class="header-section-number">3.3.2</span> Pivoting (long to wide)</a></li>
+  <li><a href="#splitting-columns" id="toc-splitting-columns" class="nav-link" data-scroll-target="#splitting-columns"><span class="header-section-number">3.3.3</span> Splitting columns</a></li>
+  <li><a href="#combining-columns" id="toc-combining-columns" class="nav-link" data-scroll-target="#combining-columns"><span class="header-section-number">3.3.4</span> Combining columns</a></li>
+  <li><a href="#advanced-columns-containing-sets-of-values" id="toc-advanced-columns-containing-sets-of-values" class="nav-link" data-scroll-target="#advanced-columns-containing-sets-of-values"><span class="header-section-number">3.3.5</span> Advanced: Columns containing sets of values</a></li>
+  </ul></li>
+  <li><a href="#concatenating-tables" id="toc-concatenating-tables" class="nav-link" data-scroll-target="#concatenating-tables"><span class="header-section-number">3.4</span> Concatenating tables</a></li>
+  <li><a href="#merging-tables" id="toc-merging-tables" class="nav-link" data-scroll-target="#merging-tables"><span class="header-section-number">3.5</span> Merging tables</a>
+  <ul>
+  <li><a href="#inner-merge" id="toc-inner-merge" class="nav-link" data-scroll-target="#inner-merge"><span class="header-section-number">3.5.1</span> Inner merge</a></li>
+  <li><a href="#outer-full-merge" id="toc-outer-full-merge" class="nav-link" data-scroll-target="#outer-full-merge"><span class="header-section-number">3.5.2</span> Outer (full) merge</a></li>
+  </ul></li>
+  <li><a href="#left-merge" id="toc-left-merge" class="nav-link" data-scroll-target="#left-merge"><span class="header-section-number">3.6</span> Left merge</a></li>
+  <li><a href="#right-merge" id="toc-right-merge" class="nav-link" data-scroll-target="#right-merge"><span class="header-section-number">3.7</span> Right merge</a>
+  <ul>
+  <li><a href="#merging-by-several-columns" id="toc-merging-by-several-columns" class="nav-link" data-scroll-target="#merging-by-several-columns"><span class="header-section-number">3.7.1</span> Merging by several columns</a></li>
+  </ul></li>
+  <li><a href="#sec-tidy-not-unique" id="toc-sec-tidy-not-unique" class="nav-link" data-scroll-target="#sec-tidy-not-unique"><span class="header-section-number">3.8</span> Tidy representations are not unique</a>
+  <ul>
+  <li><a href="#alternative-tidy-forms-of-a-table" id="toc-alternative-tidy-forms-of-a-table" class="nav-link" data-scroll-target="#alternative-tidy-forms-of-a-table"><span class="header-section-number">3.8.1</span> Alternative tidy forms of a table</a></li>
+  <li><a href="#on-multiple-types-of-observational-units-in-the-same-table" id="toc-on-multiple-types-of-observational-units-in-the-same-table" class="nav-link" data-scroll-target="#on-multiple-types-of-observational-units-in-the-same-table"><span class="header-section-number">3.8.2</span> On multiple types of observational units in the same table</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">3.9</span> Summary</a></li>
+  <li><a href="#tidy-data-resources" id="toc-tidy-data-resources" class="nav-link" data-scroll-target="#tidy-data-resources"><span class="header-section-number">3.10</span> Tidy data resources</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../topic01_Python_Basics/script/script_01.html">I Get</a></li><li class="breadcrumb-item"><a href="../../topic03_Tidy_Data/script/script_03.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tidy data and combining tables</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tidy data and combining tables</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- # Tidy data and combining tables -->
+<section id="introduction" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">3.1</span> Introduction</h2>
+<section id="motivation" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="motivation"><span class="header-section-number">3.1.1</span> Motivation</h3>
+<p>Without good practices, much of the time of a data analyst can be wasted in data wrangling rather than visualization or analysis. The concept of tidy data <span class="citation" data-cites="Wickham2014">(<a href="#ref-Wickham2014" role="doc-biblioref">Wickham 2014</a>)</span> addresses this issue by offering a standard representation of data, that is easy to manipulate, model and visualize. This chapter introduces the notion of tidy data and operations for tidying up messy datasets. Moreover, we describe how to easily concatenate tables with the same format and merge tables with common variables. This will set us ready for data visualization and analytics.</p>
+<p>This chapter is partially adopted from “Introduction to Data Science” by Rafael A. Irizarry (<a href="https://rafalab.github.io/dsbook/" class="uri">https://rafalab.github.io/dsbook/</a>). <!-- and uses concepts and material introduced by the developers of the `tidyr` package. --></p>
+</section>
+<section id="datasets-used-in-this-chapter" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="datasets-used-in-this-chapter"><span class="header-section-number">3.1.2</span> Datasets used in this chapter</h3>
+<p>The following code chunks load libraries and tables used throughout this chapter.</p>
+<div id="d7e89a43" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="12c8ab50" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>DATADIR <span class="op">=</span> Path(<span class="st">'../../extdata'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>election_results <span class="op">=</span> pd.read_csv(DATADIR <span class="op">/</span> <span class="st">'US-pres16results.csv'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>election_results <span class="op">=</span> (</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    election_results</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    .loc[</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        election_results[<span class="st">"county"</span>].isna() <span class="op">&amp;</span> (election_results[<span class="st">"st"</span>] <span class="op">!=</span> <span class="st">"US"</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        [<span class="st">"cand"</span>, <span class="st">"st"</span>, <span class="st">"votes"</span>, <span class="st">"total_votes"</span>]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>table1 <span class="op">=</span> pd.read_csv(DATADIR <span class="op">/</span> <span class="st">'table1_alternate.csv'</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>table2 <span class="op">=</span> pd.read_csv(DATADIR <span class="op">/</span> <span class="st">'table2_alternate.csv'</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>table3 <span class="op">=</span> pd.read_csv(DATADIR <span class="op">/</span> <span class="st">'table3_alternate.csv'</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>table4 <span class="op">=</span> pd.read_csv(DATADIR <span class="op">/</span> <span class="st">'table4_alternate.csv'</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>table5 <span class="op">=</span> pd.read_csv(DATADIR <span class="op">/</span> <span class="st">'table5_alternate.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="tidy-and-untidy-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="tidy-and-untidy-data"><span class="header-section-number">3.2</span> Tidy and untidy data</h2>
+<section id="definition-of-tidy-data" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="definition-of-tidy-data"><span class="header-section-number">3.2.1</span> Definition of tidy data</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/img/lec05_tidy-1_alternate.png" class="img-fluid figure-img"></p>
+<figcaption><strong>Tidy data table layout.</strong> Each variable has a column, each observation a row and each value a cell.</figcaption>
+</figure>
+</div>
+<p>We say that a data table is in <em>tidy</em> format if:</p>
+<ol type="1">
+<li>Each <strong>variable</strong> has its own <strong>column</strong>.</li>
+<li>Each <strong>observation</strong> has its own <strong>row</strong>.</li>
+<li>Each <strong>value</strong> has its own <strong>cell</strong>.</li>
+</ol>
+<p>The following dataset from the 2016 US presidential vote<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is an example of a tidy dataset:</p>
+<div id="11751f9c" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">cand</th>
+<th data-quarto-table-cell-role="th">st</th>
+<th data-quarto-table-cell-role="th">votes</th>
+<th data-quarto-table-cell-role="th">total_votes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">32</th>
+<td>Hillary Clinton</td>
+<td>CA</td>
+<td>5931283</td>
+<td>9631972</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">33</th>
+<td>Donald Trump</td>
+<td>CA</td>
+<td>3184721</td>
+<td>9631972</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">34</th>
+<td>Gary Johnson</td>
+<td>CA</td>
+<td>308392</td>
+<td>9631972</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">35</th>
+<td>Jill Stein</td>
+<td>CA</td>
+<td>166311</td>
+<td>9631972</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">36</th>
+<td>Gloria La Riva</td>
+<td>CA</td>
+<td>41265</td>
+<td>9631972</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 4 columns</p>
+</div>
+</div>
+</div>
+<p>Each row represents a state and a candidate with each of the four values related to these states stored in the four variables: candidate, state, votes, and total_votes.</p>
+</section>
+<section id="advantages-of-tidy-data" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="advantages-of-tidy-data"><span class="header-section-number">3.2.2</span> Advantages of tidy data</h3>
+<p>Organizing data in a tidy fashion reduces the burden to frequently reorganize the data. In particular, the advantages are:</p>
+<ul>
+<li>Easier manipulation using <code>pandas</code> commands such as sub-setting by rows and columns, as well as <code>merge</code> operations</li>
+<li>Vectorized operations become easier to use</li>
+<li>Many other tools work better with tidy data, including plotting functions, hypothesis testing functions, and modeling functions such as linear regression. These advantages will become striking in the following chapters.</li>
+</ul>
+</section>
+<section id="common-signs-of-untidy-datasets" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="common-signs-of-untidy-datasets"><span class="header-section-number">3.2.3</span> Common signs of untidy datasets</h3>
+<p>Often, untidy datasets can be identified by one or more of the following issues <span class="citation" data-cites="Wickham2014">(<a href="#ref-Wickham2014" role="doc-biblioref">Wickham 2014</a>)</span>:</p>
+<ul>
+<li>Column headers are values, not variable names</li>
+<li>Multiple variables are stored in one column</li>
+<li>Variables are stored in both rows and columns</li>
+<li>A single observational unit is stored in multiple tables</li>
+</ul>
+<p><span class="citation" data-cites="Wickham2014">Wickham (<a href="#ref-Wickham2014" role="doc-biblioref">2014</a>)</span> furthermore mentions “Multiple types of observational units stored in the same table” as a sign of untidy data. This point is discussed in <a href="#sec-tidy-not-unique" class="quarto-xref"><span>Section 3.8</span></a>.</p>
+<!-- We will show this advantages with the following example: -->
+<!-- ```{python, echo = FALSE} -->
+<!-- dt <- table1 -->
+<!-- ``` -->
+<!-- ```{python} -->
+<!-- head(dt) -->
+<!-- ``` -->
+<!-- As stated before, tidy data can be easily manipulated. For example in the table above we can easily compute the percentage of votes given to a candidate in a particular state using the following commands: -->
+<!--   ```{python} -->
+<!-- # Compute percentage -->
+<!-- dt[, percentage := votes / total_votes * 100] # vectorized operations; dt is modified -->
+<!-- head(dt) -->
+<!-- # Compute total votes per candidate -->
+<!-- dt[, .(votes = sum(votes)), by = candidate] # note that this does not modify dt -->
+<!-- ``` -->
+<!-- ```{python, echo = FALSE} -->
+<!-- dt_simple <- dt[candidate%in%c("Hillary Clinton", "Donald Trump") & state%in%c("CA", "FL")] -->
+<!-- ``` -->
+<!-- this would raise many questions, not the simplest plot, ggplot is complicated, etc. Also, a bit political. -->
+<!-- Additionally, tidy data works better with many packages like ggplot2 which we are going to use in this course. -->
+<!-- For the sake of simplicity of the plot we use data for the top candidates in selected states (California and Florida).  -->
+<!-- ```{python leture05-ggplot-tidy-data-alternate} -->
+<!-- ggplot(dt_simple, aes(state, votes, fill=candidate)) +  -->
+<!--      geom_bar(position="dodge", stat="identity") -->
+<!-- ``` -->
+</section>
+</section>
+<section id="tidying-up-datasets" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="tidying-up-datasets"><span class="header-section-number">3.3</span> Tidying up datasets</h2>
+<p>In this part of the chapter, we show how to transform untidy datasets into tidy ones. To this end, we will present some of the most often encountered untidy formats and present specific solutions to each of them.</p>
+<section id="melting-wide-to-long" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="melting-wide-to-long"><span class="header-section-number">3.3.1</span> Melting (wide to long)</h3>
+<p>One of the most used operations to obtain tidy data is to transform a wide table into a long table. This operation is called melting, by analogy with melting a piece of metal. It is useful in particular when data is untidy because column headers are values, and not variable names.</p>
+<p>As an example, consider the table below which reports vote counts for two US states, California and Florida. In this table, the column names CA and FL are values of the variable <em>state</em>. Therefore, we can say that this table is in an untidy format:</p>
+<div id="a505a7ea" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>table4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">candidate</th>
+<th data-quarto-table-cell-role="th">CA</th>
+<th data-quarto-table-cell-role="th">FL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Hillary Clinton</td>
+<td>5931283</td>
+<td>4485745</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Donald Trump</td>
+<td>3184721</td>
+<td>4605515</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Gary Johnson</td>
+<td>308392</td>
+<td>206007</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Jill Stein</td>
+<td>166311</td>
+<td>64019</td>
+</tr>
+</tbody>
+</table>
+
+<p>4 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<p><img src="../../assets/img/lec05_tidy-gather_alternate.png" class="img-fluid" alt="Melting the election dataset"> Melting the previous table can be achieved by using the <strong>pandas</strong> method <code>melt()</code>:</p>
+<div id="80ec0763" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pd.melt(table4, </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        id_vars <span class="op">=</span> <span class="st">"candidate"</span>, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        value_vars <span class="op">=</span> [<span class="st">'CA'</span>, <span class="st">'FL'</span>],</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        var_name <span class="op">=</span> <span class="st">"state"</span>, </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        value_name <span class="op">=</span> <span class="st">"votes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">candidate</th>
+<th data-quarto-table-cell-role="th">state</th>
+<th data-quarto-table-cell-role="th">votes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Hillary Clinton</td>
+<td>CA</td>
+<td>5931283</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Donald Trump</td>
+<td>CA</td>
+<td>3184721</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Gary Johnson</td>
+<td>CA</td>
+<td>308392</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Jill Stein</td>
+<td>CA</td>
+<td>166311</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Hillary Clinton</td>
+<td>FL</td>
+<td>4485745</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>Donald Trump</td>
+<td>FL</td>
+<td>4605515</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>Gary Johnson</td>
+<td>FL</td>
+<td>206007</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>Jill Stein</td>
+<td>FL</td>
+<td>64019</td>
+</tr>
+</tbody>
+</table>
+
+<p>8 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<!-- TODO maybe drop this?  -->
+<p>We note that the previous code snippet would also work without explicitly specifying <code>value_vars</code> or <code>id_vars</code>. If <code>value_vars</code> is omitted, pandas will melt all columns not listed in id_vars —or all columns if <code>id_vars</code> is also not provided. Conversely, if <code>id_vars</code> is omitted (and only value_vars is given), pandas will include only the columns defined in <code>value_vars</code>, resulting in an output that contains just the <code>var_name</code> and <code>value_name</code> columns.</p>
+<p>When melting, all values in the columns specified by the <code>value_vars</code> argument are gathered into one column with the name specified in the <code>var_name</code> argument.</p>
+<p>Additionally, a new column with the name in the <code>value_name</code> argument is created containing all values which were previously stored in the <code>value_vars</code> column names.</p>
+<p>After melting, we have a table in a tidy format where a row represents the number of votes for a candidate in a state. The new table also makes clear that the quantities are numbers of votes thanks to the column name.</p>
+</section>
+<section id="pivoting-long-to-wide" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="pivoting-long-to-wide"><span class="header-section-number">3.3.2</span> Pivoting (long to wide)</h3>
+<p>The other way around also happens frequently. It is helpful when multiple variables are stored in one column. In the table below, multiple values, namely the number of votes for a candidate and the total number of votes, are reported in one column. It is not easy to compute the percentage of votes given to a candidate in this format. To tidy up this table we have to separate those values into two columns:</p>
+<div id="1b2f5db5" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>table2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">candidate</th>
+<th data-quarto-table-cell-role="th">state</th>
+<th data-quarto-table-cell-role="th">type</th>
+<th data-quarto-table-cell-role="th">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Hillary Clinton</td>
+<td>CA</td>
+<td>votes</td>
+<td>5931283</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Hillary Clinton</td>
+<td>CA</td>
+<td>total_votes</td>
+<td>9631972</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Donald Trump</td>
+<td>CA</td>
+<td>votes</td>
+<td>3184721</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Donald Trump</td>
+<td>CA</td>
+<td>total_votes</td>
+<td>9631972</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Gary Johnson</td>
+<td>CA</td>
+<td>votes</td>
+<td>308392</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>Gary Johnson</td>
+<td>CA</td>
+<td>total_votes</td>
+<td>9631972</td>
+</tr>
+</tbody>
+</table>
+
+<p>6 rows × 4 columns</p>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/img/lec05_tidy-spread_alternate.png" class="img-fluid figure-img"></p>
+<figcaption>Casting the election dataset</figcaption>
+</figure>
+</div>
+<p>This operation, which transforms a long table into a wide table is called casting, following up with the metal forging analogy employed with the term “melting”.</p>
+<p>Pandas <strong>pivot</strong> transforms a long table into a wide table and is achieved with the <code>pivot</code> method whose most frequent usage is:</p>
+<div id="c18b0113" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>wide <span class="op">=</span> data.pivot(index<span class="op">=</span>[<span class="st">'&lt;id&gt;'</span>], columns<span class="op">=</span><span class="st">'&lt;category&gt;'</span>, </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>values<span class="op">=</span><span class="st">'&lt;value&gt;'</span>).reset_index()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The <code>.pivot()</code> method requires specifying three key arguments: <code>index</code>, <code>columns</code>, and <code>values</code>.</p>
+<ul>
+<li><p><code>columns</code>: Specifies which column in the original (long) table contains the categories that will become the names of the new columns in the wide table.</p></li>
+<li><p><code>values</code>: Refers to the column from which the data values should be extracted to populate the cells under the new wide columns.</p></li>
+<li><p><code>index</code>: Specifies the column(s) that should form the new row indices (keys) of the wide table. (Note: Using <code>reset_index()</code> is necessary after the pivot to turn these indices back into regular columns.)</p></li>
+</ul>
+<p>The call then is:</p>
+<div id="b0a88f11" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>table2.pivot(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">"candidate"</span>, <span class="st">"state"</span>],   </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span><span class="st">"type"</span>,              </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span><span class="st">"value"</span>               </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>).reset_index()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">type</th>
+<th data-quarto-table-cell-role="th">candidate</th>
+<th data-quarto-table-cell-role="th">state</th>
+<th data-quarto-table-cell-role="th">total_votes</th>
+<th data-quarto-table-cell-role="th">votes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Donald Trump</td>
+<td>CA</td>
+<td>9631972</td>
+<td>3184721</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Gary Johnson</td>
+<td>CA</td>
+<td>9631972</td>
+<td>308392</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Hillary Clinton</td>
+<td>CA</td>
+<td>9631972</td>
+<td>5931283</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 4 columns</p>
+</div>
+</div>
+</div>
+<!-- The function `dcast` has many more arguments. Also the formula can allow for more sophisticated ways to handle the columns. We refer to the "datatable-reshape" vignette (see section Resources) and the help of `dcast()` for more details.  -->
+</section>
+<section id="splitting-columns" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="splitting-columns"><span class="header-section-number">3.3.3</span> Splitting columns</h3>
+<p>Sometimes single variables can be spread across multiple columns as in the following table.</p>
+<div id="9e09ee03" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">## One column contains multiple variables</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>table3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">candidate</th>
+<th data-quarto-table-cell-role="th">state</th>
+<th data-quarto-table-cell-role="th">proportion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Hillary Clinton</td>
+<td>CA</td>
+<td>5931283/9631972</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Donald Trump</td>
+<td>CA</td>
+<td>3184721/9631972</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Gary Johnson</td>
+<td>CA</td>
+<td>308392/9631972</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<p>The number of votes per candidate is displayed in the numerator of the <code>proportion</code> column and the total number in the denominator.</p>
+<p>We split up the <code>proportion</code> column into two columns, one containing the votes and the other one containing the total votes with the method <code>str.split</code>:</p>
+<div id="b6ec2129" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>table3[[<span class="st">"votes"</span>, <span class="st">"total_votes"</span>]] <span class="op">=</span> table3[<span class="st">"proportion"</span>] <span class="op">\</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">str</span>.split(<span class="st">"/"</span>, expand<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>table3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">candidate</th>
+<th data-quarto-table-cell-role="th">state</th>
+<th data-quarto-table-cell-role="th">proportion</th>
+<th data-quarto-table-cell-role="th">votes</th>
+<th data-quarto-table-cell-role="th">total_votes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Hillary Clinton</td>
+<td>CA</td>
+<td>5931283/9631972</td>
+<td>5931283</td>
+<td>9631972</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Donald Trump</td>
+<td>CA</td>
+<td>3184721/9631972</td>
+<td>3184721</td>
+<td>9631972</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Gary Johnson</td>
+<td>CA</td>
+<td>308392/9631972</td>
+<td>308392</td>
+<td>9631972</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 5 columns</p>
+</div>
+</div>
+</div>
+<p><img src="../../assets/img/lec05_tidy-separate_alternate.png" class="img-fluid" alt="Separated election dataset"> The drawing above visualizes the operation performed above.</p>
+</section>
+<section id="combining-columns" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="combining-columns"><span class="header-section-number">3.3.4</span> Combining columns</h3>
+<p>In this example the first and last names are separated columns without a real need for it (we will not be interested in computing any statistics over all Hillary’s):</p>
+<div id="ed738695" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>table5</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">surname</th>
+<th data-quarto-table-cell-role="th">state</th>
+<th data-quarto-table-cell-role="th">votes</th>
+<th data-quarto-table-cell-role="th">total_votes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Hillary</td>
+<td>Clinton</td>
+<td>CA</td>
+<td>5931283</td>
+<td>9631972</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Donald</td>
+<td>Trump</td>
+<td>CA</td>
+<td>3184721</td>
+<td>9631972</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Gary</td>
+<td>Johnson</td>
+<td>CA</td>
+<td>308392</td>
+<td>9631972</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Jill</td>
+<td>Stein</td>
+<td>CA</td>
+<td>166311</td>
+<td>9631972</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Gloria</td>
+<td>La Riva</td>
+<td>CA</td>
+<td>41265</td>
+<td>9631972</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 5 columns</p>
+</div>
+</div>
+</div>
+<p>We combine the contents of the name and surname columns into a single candidate column using the string addition operation <code>+</code></p>
+<div id="a45c105c" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>table5[<span class="st">"candidate"</span>] <span class="op">=</span> table5[<span class="st">"name"</span>] <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> table5[<span class="st">"surname"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/img/lec05_tidy-unite_alternate.png" class="img-fluid figure-img"></p>
+<figcaption>United election dataset</figcaption>
+</figure>
+</div>
+</section>
+<section id="advanced-columns-containing-sets-of-values" class="level3" data-number="3.3.5">
+<h3 data-number="3.3.5" class="anchored" data-anchor-id="advanced-columns-containing-sets-of-values"><span class="header-section-number">3.3.5</span> Advanced: Columns containing sets of values</h3>
+<p>Kaggle, a machine learning platform, conducts a yearly survey among its users. Below are a few columns of the answers from the 2017 survey. In those columns, we observe another type of untidy data. In this survey, multiple choice questions were asked from which multiple answers could be selected. For each individual the selected answers are concatenated into a string.</p>
+<div id="c7c8c1e5" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>survey <span class="op">=</span> pd.read_csv(DATADIR <span class="op">/</span> <span class="st">'kaggle-survey-2017/multipleChoiceResponses.csv'</span>, encoding<span class="op">=</span><span class="st">'latin-1'</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>survey[[<span class="st">'LanguageRecommendationSelect'</span>, <span class="st">'LearningPlatformSelect'</span>, <span class="st">'PastJobTitlesSelect'</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">LanguageRecommendationSelect</th>
+<th data-quarto-table-cell-role="th">LearningPlatformSelect</th>
+<th data-quarto-table-cell-role="th">PastJobTitlesSelect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>F#</td>
+<td>College/University,Conferences,Podcasts,Trade ...</td>
+<td>Predictive Modeler,Programmer,Researcher</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Python</td>
+<td>Kaggle</td>
+<td>Software Developer/Software Engineer</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>R</td>
+<td>Arxiv,College/University,Kaggle,Online courses...</td>
+<td>Data Scientist,Machine Learning Engineer</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Python</td>
+<td>Blogs,College/University,Conferences,Friends n...</td>
+<td>Business Analyst,Operations Research Practitio...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Python</td>
+<td>Arxiv,Conferences,Kaggle,Textbook</td>
+<td>Computer Scientist,Data Analyst,Data Miner,Dat...</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<p>Below is one solution of how the <code>LearningPlatformSelect</code> column could be transformed into a tidy format.</p>
+<div id="b228b1e3" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>platform_splits <span class="op">=</span> survey[<span class="st">'LearningPlatformSelect'</span>].<span class="bu">str</span>.split(<span class="st">','</span>, expand<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>platform_splits[<span class="st">'individual'</span>] <span class="op">=</span> survey.index</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>LearningPlatformMelt <span class="op">=</span> platform_splits.melt(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    id_vars<span class="op">=</span><span class="st">'individual'</span>, </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    value_name<span class="op">=</span><span class="st">'Platform'</span>, </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    var_name<span class="op">=</span><span class="va">None</span>           </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>LearningPlatformMelt.sort_values(by<span class="op">=</span><span class="st">'individual'</span>).head(n<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">individual</th>
+<th data-quarto-table-cell-role="th">variable</th>
+<th data-quarto-table-cell-role="th">Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>0</td>
+<td>0</td>
+<td>College/University</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">284172</th>
+<td>0</td>
+<td>17</td>
+<td>None</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">33432</th>
+<td>0</td>
+<td>2</td>
+<td>Podcasts</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">50148</th>
+<td>0</td>
+<td>3</td>
+<td>Trade book</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">267456</th>
+<td>0</td>
+<td>16</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 3 columns</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="concatenating-tables" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="concatenating-tables"><span class="header-section-number">3.4</span> Concatenating tables</h2>
+<p>One frequently has to concatenate (i.e.&nbsp;append) tables with a same format. Such tables may already be loaded into a list or shall be read from multiple files.</p>
+<p>For instance, assume a service generates a new file of data per day in a given directory. One is interested in analyzing the files of multiple days jointly. This requires to list all files of the directory, to read each file and to concatenate them into one.</p>
+<p>Here is an example with daily COVID-19 data. We first get all file names of the directory into a character vector called <code>files</code>:</p>
+<div id="19ce8f19" class="cell" data-show="false" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>files <span class="op">=</span> glob.glob(<span class="ss">f"</span><span class="sc">{</span>DATADIR<span class="sc">}</span><span class="ss">/cov_concatenate/*"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>files[:<span class="dv">5</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>['../../extdata/cov_concatenate/covid_cases_01_03_2020.csv',
+ '../../extdata/cov_concatenate/covid_cases_08_03_2020.csv',
+ '../../extdata/cov_concatenate/covid_cases_26_03_2020.csv',
+ '../../extdata/cov_concatenate/covid_cases_14_03_2020.csv',
+ '../../extdata/cov_concatenate/covid_cases_23_03_2020.csv']</code></pre>
+</div>
+</div>
+<p>Next, we load all file contents with <code>pd.read_csv</code> using a dictionary comprehension, which returns a dictionary of <code>DataFrames</code> with filenames as the keys.</p>
+<div id="083ca5e6" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tables <span class="op">=</span> {Path(f).name: pd.read_csv(f) <span class="cf">for</span> f <span class="kw">in</span> files}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let us now look at the first table:</p>
+<div id="524ac607" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tables[<span class="st">'covid_cases_01_03_2020.csv'</span>].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">cases</th>
+<th data-quarto-table-cell-role="th">deaths</th>
+<th data-quarto-table-cell-role="th">countriesAndTerritories</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">popData2019</th>
+<th data-quarto-table-cell-role="th">continentExp</th>
+<th data-quarto-table-cell-role="th">Cumulative_number_for_14_days_of_COVID-19_cases_per_100000</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>54</td>
+<td>0</td>
+<td>Germany</td>
+<td>...</td>
+<td>83019213</td>
+<td>Europe</td>
+<td>0.115636</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>240</td>
+<td>8</td>
+<td>Italy</td>
+<td>...</td>
+<td>60359546</td>
+<td>Europe</td>
+<td>1.863831</td>
+</tr>
+</tbody>
+</table>
+
+<p>2 rows × 8 columns</p>
+</div>
+</div>
+</div>
+<p>To combine the different tables into one, we can use the pandas function <code>pd.concat</code>. The <code>keys</code> argument introduces a MultiIndex, with the filenames forming the outermost index level. This allows us to keep information about the date when the data was acquired, which is stored in the filename. We then use <code>.reset_index(level='filename')</code> to convert this index level into a standard column named filename. The final <code>.reset_index(drop=True)</code> assigns a new, sequential index to the combined DataFrame.</p>
+<div id="71bb6e3d" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> (</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    pd.concat(tables.values(), keys<span class="op">=</span>tables.keys(), </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    names<span class="op">=</span>[<span class="st">'filename'</span>, <span class="st">'index'</span>])</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>      .reset_index(level<span class="op">=</span><span class="st">'filename'</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">filename</th>
+<th data-quarto-table-cell-role="th">cases</th>
+<th data-quarto-table-cell-role="th">deaths</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">popData2019</th>
+<th data-quarto-table-cell-role="th">continentExp</th>
+<th data-quarto-table-cell-role="th">Cumulative_number_for_14_days_of_COVID-19_cases_per_100000</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>covid_cases_01_03_2020.csv</td>
+<td>54</td>
+<td>0</td>
+<td>...</td>
+<td>83019213</td>
+<td>Europe</td>
+<td>0.115636</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>covid_cases_01_03_2020.csv</td>
+<td>240</td>
+<td>8</td>
+<td>...</td>
+<td>60359546</td>
+<td>Europe</td>
+<td>1.863831</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>covid_cases_08_03_2020.csv</td>
+<td>163</td>
+<td>0</td>
+<td>...</td>
+<td>83019213</td>
+<td>Europe</td>
+<td>1.002178</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>covid_cases_08_03_2020.csv</td>
+<td>1247</td>
+<td>36</td>
+<td>...</td>
+<td>60359546</td>
+<td>Europe</td>
+<td>9.615712</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>covid_cases_26_03_2020.csv</td>
+<td>4954</td>
+<td>49</td>
+<td>...</td>
+<td>83019213</td>
+<td>Europe</td>
+<td>42.087848</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 9 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="merging-tables" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="merging-tables"><span class="header-section-number">3.5</span> Merging tables</h2>
+<p>Merging two data tables into one by common column(s) is frequently needed. This can be achieved using the <code>merge</code> method whose core signature is:</p>
+<div id="2954d6a4" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df.merge(y, <span class="co"># tables to merge</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>        how <span class="op">=</span> <span class="st">'left'</span>, <span class="co"># type of merge</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        on<span class="op">=</span><span class="va">None</span>, left_on<span class="op">=</span><span class="va">None</span>, right_on<span class="op">=</span><span class="va">None</span> <span class="co"># by which columns</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The four types of merges (also commonly called joins) are:</p>
+<ul>
+<li><p><strong>Inner (default)</strong>: consider only rows with matching values in the <code>on</code> columns.</p></li>
+<li><p><strong>Outer or full (all)</strong>: return all rows and columns from <code>x</code> and <code>y</code>. If there are no matching values, return NaNs.</p></li>
+<li><p><strong>Left (all.x)</strong>: consider all rows from <code>x</code>, even if they have no matching row in <code>y</code>.</p></li>
+<li><p><strong>Right (all.y)</strong>: consider all rows from <code>y</code>, even if they have no matching row in <code>x</code>.</p></li>
+</ul>
+<p>We now provide examples of each type using the following made up tables:</p>
+<div id="96b551fb" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'p_id'</span>: [<span class="st">'G008'</span>, <span class="st">'F027'</span>, <span class="st">'L051'</span>],</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'value'</span>: np.random.normal(size<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>display(df1.head)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'p_id'</span>: [<span class="st">'G008'</span>, <span class="st">'F027'</span>, <span class="st">'U093'</span>],</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'country'</span>: [<span class="st">'Germany'</span>, <span class="st">'France'</span>, <span class="st">'USA'</span>]</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>df2.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;bound method NDFrame.head of    p_id     value
+0  G008  0.760117
+1  F027  0.783388
+2  L051  0.046042
+
+[3 rows x 2 columns]&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">p_id</th>
+<th data-quarto-table-cell-role="th">country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>G008</td>
+<td>Germany</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>F027</td>
+<td>France</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>U093</td>
+<td>USA</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 2 columns</p>
+</div>
+</div>
+</div>
+<section id="inner-merge" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="inner-merge"><span class="header-section-number">3.5.1</span> Inner merge</h3>
+<p>An inner merge returns only rows with matching values in the <code>on</code> columns and discards all other rows:</p>
+<div id="d35d249f" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inner merge, default one, all = FALSE</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> df1.merge(df2, on<span class="op">=</span><span class="st">'p_id'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">p_id</th>
+<th data-quarto-table-cell-role="th">value</th>
+<th data-quarto-table-cell-role="th">country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>G008</td>
+<td>0.760117</td>
+<td>Germany</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>F027</td>
+<td>0.783388</td>
+<td>France</td>
+</tr>
+</tbody>
+</table>
+
+<p>2 rows × 3 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="outer-full-merge" class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="outer-full-merge"><span class="header-section-number">3.5.2</span> Outer (full) merge</h3>
+<p>An outer merge returns all rows and columns from <code>x</code> and <code>y</code>. If there are no matching values in <code>p_id</code>, it yields missing values (<code>NaN</code>):</p>
+<div id="5c02d56f" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Outer (full) merge</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> df1.merge(df2, on<span class="op">=</span><span class="st">'p_id'</span>, how<span class="op">=</span><span class="st">'outer'</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">p_id</th>
+<th data-quarto-table-cell-role="th">value</th>
+<th data-quarto-table-cell-role="th">country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>F027</td>
+<td>0.783388</td>
+<td>France</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>G008</td>
+<td>0.760117</td>
+<td>Germany</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>L051</td>
+<td>0.046042</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>U093</td>
+<td>NaN</td>
+<td>USA</td>
+</tr>
+</tbody>
+</table>
+
+<p>4 rows × 3 columns</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="left-merge" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="left-merge"><span class="header-section-number">3.6</span> Left merge</h2>
+<p>Returns all rows from <code>x</code>, even if they have no matching row in <code>y</code>. Rows from <code>x</code> with no matching <code>p_id</code> in <code>y</code> lead to missing values (<code>NaN</code>).</p>
+<div id="18481943" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Left merge </span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> df1.merge(df2, on<span class="op">=</span><span class="st">'p_id'</span>, how<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">p_id</th>
+<th data-quarto-table-cell-role="th">value</th>
+<th data-quarto-table-cell-role="th">country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>G008</td>
+<td>0.760117</td>
+<td>Germany</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>F027</td>
+<td>0.783388</td>
+<td>France</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>L051</td>
+<td>0.046042</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 3 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="right-merge" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="right-merge"><span class="header-section-number">3.7</span> Right merge</h2>
+<p>Returns all rows from <code>y</code>, even if they have no matching row in <code>x</code>. Rows from <code>y</code> with no matching <code>p_id</code> in <code>x</code> lead to missing values (<code>NaN</code>).</p>
+<div id="e1b32468" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Right merge</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> df1.merge(df2, on<span class="op">=</span><span class="st">'p_id'</span>, how<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">p_id</th>
+<th data-quarto-table-cell-role="th">value</th>
+<th data-quarto-table-cell-role="th">country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>G008</td>
+<td>0.760117</td>
+<td>Germany</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>F027</td>
+<td>0.783388</td>
+<td>France</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>U093</td>
+<td>NaN</td>
+<td>USA</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<section id="merging-by-several-columns" class="level3" data-number="3.7.1">
+<h3 data-number="3.7.1" class="anchored" data-anchor-id="merging-by-several-columns"><span class="header-section-number">3.7.1</span> Merging by several columns</h3>
+<p>Merging can also be done using more than two columns. Here are two made up tables to illustrate this use case:</p>
+<div id="f7b40111" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'firstname'</span>: [<span class="st">'Alice'</span>, <span class="st">'Alice'</span>, <span class="st">'Bob'</span>],</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'lastname'</span>:  [<span class="st">'Coop'</span>,  <span class="st">'Smith'</span>, <span class="st">'Smith'</span>],</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'x'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>display(df1.head())</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'firstname'</span>: [<span class="st">'Alice'</span>, <span class="st">'Bob'</span>,   <span class="st">'Bob'</span>],</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'lastname'</span>:  [<span class="st">'Coop'</span>,  <span class="st">'Marley'</span>,<span class="st">'Smith'</span>],</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'y'</span>: <span class="bu">list</span>(<span class="st">'ABC'</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>df2.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">firstname</th>
+<th data-quarto-table-cell-role="th">lastname</th>
+<th data-quarto-table-cell-role="th">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alice</td>
+<td>Coop</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Alice</td>
+<td>Smith</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Bob</td>
+<td>Smith</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 3 columns</p>
+</div>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">firstname</th>
+<th data-quarto-table-cell-role="th">lastname</th>
+<th data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alice</td>
+<td>Coop</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Bob</td>
+<td>Marley</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Bob</td>
+<td>Smith</td>
+<td>C</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<p>We now merge <code>df1</code> and <code>df2</code> by first name and last name:</p>
+<div id="8f7c10f8" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df1.merge(df2, on<span class="op">=</span>[<span class="st">'firstname'</span>, <span class="st">'lastname'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">firstname</th>
+<th data-quarto-table-cell-role="th">lastname</th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alice</td>
+<td>Coop</td>
+<td>1</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Bob</td>
+<td>Smith</td>
+<td>3</td>
+<td>C</td>
+</tr>
+</tbody>
+</table>
+
+<p>2 rows × 4 columns</p>
+</div>
+</div>
+</div>
+<p>Note that merging by first name only gives a different result (as expected):</p>
+<div id="a1a75839" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df1.merge(df2, on<span class="op">=</span><span class="st">'firstname'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">firstname</th>
+<th data-quarto-table-cell-role="th">lastname_x</th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">lastname_y</th>
+<th data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alice</td>
+<td>Coop</td>
+<td>1</td>
+<td>Coop</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Alice</td>
+<td>Smith</td>
+<td>2</td>
+<td>Coop</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Bob</td>
+<td>Smith</td>
+<td>3</td>
+<td>Marley</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Bob</td>
+<td>Smith</td>
+<td>3</td>
+<td>Smith</td>
+<td>C</td>
+</tr>
+</tbody>
+</table>
+
+<p>4 rows × 5 columns</p>
+</div>
+</div>
+</div>
+<p>Also notice that in this case the merge tables has a column <code>lastname_x</code> and a column <code>lastname_y</code>. This is because the two original data tables have a column named the same way (“lastname”), but this column was not part of the “by” argument. Hence, it is assumed that they do not necessarily correspond to the same variable. Hence, they receive distinct names in the returned table.</p>
+</section>
+</section>
+<section id="sec-tidy-not-unique" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="sec-tidy-not-unique"><span class="header-section-number">3.8</span> Tidy representations are not unique</h2>
+<p>While untidy data should be avoided, there can be multiple tidy representations for a particular dataset. We explain this regarding i) alternative forms of a single table and ii) the practical utility of non-normalized representations (i.e.&nbsp;with redundant information).</p>
+<section id="alternative-tidy-forms-of-a-table" class="level3" data-number="3.8.1">
+<h3 data-number="3.8.1" class="anchored" data-anchor-id="alternative-tidy-forms-of-a-table"><span class="header-section-number">3.8.1</span> Alternative tidy forms of a table</h3>
+<p>There can be alternative tidy representations for a same table. Here is an example based on Fisher’s Iris dataset. This classic dataset contains measurements of 4 different attributes for 150 iris flowers from 3 different species. See <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set" class="uri">https://en.wikipedia.org/wiki/Iris_flower_data_set</a>.</p>
+<!-- ```{python echo=F, fig.show = "hold", out.width = "40%", fig.align = "center", fig.pos='H'}
+knitr::include_graphics("../../assets/img/lec03_iris.png")
+``` -->
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/img/lec03_iris.png" class="img-fluid figure-img"></p>
+<figcaption>Iris</figcaption>
+</figure>
+</div>
+<div id="cc786fad" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>iris_df <span class="op">=</span> iris.frame.rename(columns<span class="op">=</span>{<span class="st">'target'</span>: <span class="st">'Species'</span>})</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>iris_df[<span class="st">'Species'</span>] <span class="op">=</span> iris_df[<span class="st">'Species'</span>].<span class="bu">map</span>(<span class="bu">dict</span>(<span class="bu">enumerate</span>(iris.target_names)))</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>iris_df.insert(<span class="dv">0</span>, <span class="st">'Flower'</span>, [<span class="ss">f"F_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(iris_df))])</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>iris_melt <span class="op">=</span> pd.melt(</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    iris_df,</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    id_vars<span class="op">=</span>[<span class="st">'Flower'</span>, <span class="st">'Species'</span>],</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    var_name<span class="op">=</span><span class="st">'Attribute'</span>,</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    value_vars<span class="op">=</span>[<span class="st">'sepal length (cm)'</span>, <span class="st">'sepal width (cm)'</span>, <span class="st">'petal length (cm)'</span>, <span class="st">'petal width (cm)'</span>]</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here is one tidy representation where each row represents one flower:</p>
+<div id="550ec2f4" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Iris dataset, usual representation</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>iris_df.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Flower</th>
+<th data-quarto-table-cell-role="th">sepal length (cm)</th>
+<th data-quarto-table-cell-role="th">sepal width (cm)</th>
+<th data-quarto-table-cell-role="th">petal length (cm)</th>
+<th data-quarto-table-cell-role="th">petal width (cm)</th>
+<th data-quarto-table-cell-role="th">Species</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>F_1</td>
+<td>5.1</td>
+<td>3.5</td>
+<td>1.4</td>
+<td>0.2</td>
+<td>setosa</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>F_2</td>
+<td>4.9</td>
+<td>3.0</td>
+<td>1.4</td>
+<td>0.2</td>
+<td>setosa</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>F_3</td>
+<td>4.7</td>
+<td>3.2</td>
+<td>1.3</td>
+<td>0.2</td>
+<td>setosa</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 6 columns</p>
+</div>
+</div>
+</div>
+<p>Here is another tidy representation where each row represents one measurement:</p>
+<div id="edd77342" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Another tidy representation</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>iris_melt.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Flower</th>
+<th data-quarto-table-cell-role="th">Species</th>
+<th data-quarto-table-cell-role="th">Attribute</th>
+<th data-quarto-table-cell-role="th">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>F_1</td>
+<td>setosa</td>
+<td>sepal length (cm)</td>
+<td>5.1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>F_2</td>
+<td>setosa</td>
+<td>sepal length (cm)</td>
+<td>4.9</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>F_3</td>
+<td>setosa</td>
+<td>sepal length (cm)</td>
+<td>4.7</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 4 columns</p>
+</div>
+</div>
+</div>
+<p>Both representations are tidy and can be more or less useful depending on the downstream analysis. For instance the first representation, which is wide, is handy to assess the relationship between sepal length and sepal width, say by plotting one against the other one or by computing their correlations. The second representation, which is long, can be useful to compute means by attributes or by attributes and species. In the wide form, computing those group means would require to select columns by names which is tedious and leads to not-easily maintainable code. The decisive criteria between using one or the other tidy representation is the definition on what is considered as an observation in the use case.</p>
+</section>
+<section id="on-multiple-types-of-observational-units-in-the-same-table" class="level3" data-number="3.8.2">
+<h3 data-number="3.8.2" class="anchored" data-anchor-id="on-multiple-types-of-observational-units-in-the-same-table"><span class="header-section-number">3.8.2</span> On multiple types of observational units in the same table</h3>
+<p>Another important remark for handling tidy data in practice relates to the last common sign of messy datasets according to <span class="citation" data-cites="Wickham2014">Wickham (<a href="#ref-Wickham2014" role="doc-biblioref">2014</a>)</span>, i.e.&nbsp;“Multiple types of observational units are stored in the same table”. Applying this criteria actually depends on the context.</p>
+<p>Consider the following table which combines product and customer data:</p>
+<div id="beb2d138" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>prod_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"productCode"</span>: [<span class="st">"p018"</span>, <span class="st">"p030"</span>, <span class="st">"p018"</span>],</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"productName"</span>: [<span class="st">"dryer"</span>, <span class="st">"phone"</span>, <span class="st">"dryer"</span>],</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"customerNumber"</span>: [<span class="st">"c001"</span>, <span class="st">"c001"</span>, <span class="st">"c002"</span>],</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"customerName"</span>: [<span class="st">"Smith"</span>, <span class="st">"Smith"</span>, <span class="st">"Lewis"</span>],</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"priceEach"</span>: [<span class="dv">450</span>, <span class="dv">600</span>, <span class="dv">450</span>],</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"state"</span>: [<span class="st">"CA"</span>, <span class="st">"CA"</span>, <span class="st">"AZ"</span>],</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quantOrdered"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>prod_df[[<span class="st">"productCode"</span>, <span class="st">"quantOrdered"</span>, <span class="st">"priceEach"</span>,</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>         <span class="st">"customerNumber"</span>, <span class="st">"customerName"</span>, <span class="st">"state"</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">productCode</th>
+<th data-quarto-table-cell-role="th">quantOrdered</th>
+<th data-quarto-table-cell-role="th">priceEach</th>
+<th data-quarto-table-cell-role="th">customerNumber</th>
+<th data-quarto-table-cell-role="th">customerName</th>
+<th data-quarto-table-cell-role="th">state</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>p018</td>
+<td>1</td>
+<td>450</td>
+<td>c001</td>
+<td>Smith</td>
+<td>CA</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>p030</td>
+<td>2</td>
+<td>600</td>
+<td>c001</td>
+<td>Smith</td>
+<td>CA</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>p018</td>
+<td>1</td>
+<td>450</td>
+<td>c002</td>
+<td>Lewis</td>
+<td>AZ</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 6 columns</p>
+</div>
+</div>
+</div>
+<p>This table is tidy. Each row corresponds to an order. The columns are variables. However, it contains repetitive information: the product code, product name and its price on the one hand, the customer number, name and state on the other hand. The information could be stored in separate tables without data repetitions, namely:</p>
+<ul>
+<li>a consumer table:</li>
+</ul>
+<div id="8daad03b" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>prod_df[[<span class="st">'customerNumber'</span>, <span class="st">'customerName'</span>, <span class="st">'state'</span>]].drop_duplicates()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">customerNumber</th>
+<th data-quarto-table-cell-role="th">customerName</th>
+<th data-quarto-table-cell-role="th">state</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>c001</td>
+<td>Smith</td>
+<td>CA</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2</th>
+<td>c002</td>
+<td>Lewis</td>
+<td>AZ</td>
+</tr>
+</tbody>
+</table>
+
+<p>2 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<ul>
+<li>a product table:</li>
+</ul>
+<div id="ebe8b12c" class="cell" data-execution_count="34">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>prod_df[[<span class="st">'productCode'</span>, <span class="st">'priceEach'</span>]].drop_duplicates()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">productCode</th>
+<th data-quarto-table-cell-role="th">priceEach</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>p018</td>
+<td>450</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>p030</td>
+<td>600</td>
+</tr>
+</tbody>
+</table>
+
+<p>2 rows × 2 columns</p>
+</div>
+</div>
+</div>
+<ul>
+<li>an order table:</li>
+</ul>
+<div id="d9089e99" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>prod_df[[<span class="st">'productCode'</span>, <span class="st">'customerNumber'</span>, <span class="st">'quantOrdered'</span>]].drop_duplicates()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">productCode</th>
+<th data-quarto-table-cell-role="th">customerNumber</th>
+<th data-quarto-table-cell-role="th">quantOrdered</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>p018</td>
+<td>c001</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>p030</td>
+<td>c001</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>p018</td>
+<td>c002</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<p>The three-table representation, where each table has unique entries is called a normalized representation. Normalized representations ensure that no multiple types of observational units are stored in the same table. It is a good habit to have normalized representations for database back-ends because it facilitates maintenance of the data consistency by reducing redundancy. One should not enter all customer details at each order but do it one central place and link the information with a customer number.</p>
+<p>However, on the data analysis side (front-end), we are not interested in maintaining a database (back-end), rather in having the desired data in a ready-to-use format which depends on our needs. To this end, the merge table is very handy and can be the common denominator of multiple analyses like:</p>
+<div id="146dbdf5" class="cell" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># vectorized operations e.g. total price of each order</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>prod_df[<span class="st">"totalPrice"</span>] <span class="op">=</span> prod_df[<span class="st">"quantOrdered"</span>] <span class="op">*</span> prod_df[<span class="st">"priceEach"</span>]</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># group by operations, e.g. number of products per states </span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>prod_df[<span class="st">"N_prod"</span>] <span class="op">=</span> prod_df.groupby(<span class="st">"state"</span>)[<span class="st">"productCode"</span>].transform(<span class="st">"count"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Hence, the choice of the representation (normalized or not) depends on the context: back-end or front-end.</p>
+</section>
+</section>
+<section id="summary" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="summary"><span class="header-section-number">3.9</span> Summary</h2>
+<p>By now, you should be able to:</p>
+<ul>
+<li>define what a tidy dataset is</li>
+<li>recognize untidy data</li>
+<li>perform the operations of melting and casting</li>
+<li>perform the operations of uniting and splitting</li>
+<li>append tables with the same format by rows</li>
+<li>understand and perform the 4 merging operations</li>
+</ul>
+</section>
+<section id="tidy-data-resources" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="tidy-data-resources"><span class="header-section-number">3.10</span> Tidy data resources</h2>
+<p>Tidy data: H. Wickham, Journal of Statistical Software, 2014, Volume 59, Issue 10 <a href="https://www.jstatsoft.org/v59/i10/paper" class="uri">https://www.jstatsoft.org/v59/i10/paper</a></p>
+<p>Pandas: <a href="https://pandas.pydata.org/docs/index.html" class="uri">https://pandas.pydata.org/docs/index.html</a></p>
+<!-- Stringr, A complementary package for string manipulations: -->
+<!-- <https://github.com/rstudio/cheatsheets/raw/master/strings.pdf> -->
+<!-- ### Advantages of non-tidy data -->
+<!-- * Performance advantage using certain functions -->
+<!--   + `colSums()` or `heatmap()` on matrices -->
+<!-- * Field convention -->
+<!-- * Memory efficiency -->
+<!--   + don't worry, you should be fine with tidy-data in `data.table` -->
+<!-- Interesting blog post: -->
+<!--   * <http://simplystatistics.org/2016/02/17/non-tidy-data/> -->
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Wickham2014" class="csl-entry" role="listitem">
+Wickham, Hadley. 2014. <span>“Tidy Data.”</span> <em>Journal of Statistical Software, Articles</em> 59 (10): 1–23. <a href="https://doi.org/10.18637/jss.v059.i10">https://doi.org/10.18637/jss.v059.i10</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>https://www.kaggle.com/stevepalley/2016uspresidentialvotebycounty?select=pres16results.csv<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../topic02_Data_Wrangling/script/script_02.html" class="pagination-link" aria-label="Data Wrangling">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Wrangling</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../topic04_Plotting-I/script/script_04.html" class="pagination-link" aria-label="Low dimensional visualizations">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Low dimensional visualizations</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

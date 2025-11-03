@@ -1,3 +1,3 @@
 # dataviz
-Data Analysis and Visualization in R
+Data Analysis and Visualization in Python
 

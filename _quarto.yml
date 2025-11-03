@@ -2,7 +2,6 @@ project:
   type: book
   output-dir: docs
 
-
 execute: 
   kernel: dataviz
 
@@ -81,4 +80,7 @@ book:
         - topic02_Data_Wrangling/script/script_02.qmd
         - topic03_Tidy_Data/script/script_03.qmd
         - topic04_Plotting-I/script/script_04.qmd
+     
+  appendices: 
+    - appendix04_Probabilities/script/appendix_04.qmd
 

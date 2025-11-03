@@ -302,29 +302,34 @@ files[:5]
 ```
 
 
-Next, we load all file contents with `pd.read_csv` using a dictionary comprehension, which returns a dictionary of `DataFrames` with filenames as the keys. 
-```{python}
-tables = {Path(f).name: pd.read_csv(f) for f in files}
-```
-
 Let us now look at the first table: 
 ```{python}
-tables['covid_cases_01_03_2020.csv'].head()
-```
-
-To combine the different tables into one, we can use the pandas function `pd.concat`. 
-The `keys` argument introduces a MultiIndex, with the filenames forming the outermost index level. This allows us to keep information about the date when the data was acquired, which is stored in the filename. 
-We then use `.reset_index(level='filename')` to convert this index level into a standard column named filename. The final `.reset_index(drop=True)` assigns a new, sequential index to the combined DataFrame.
-```{python}
-df = (
-    pd.concat(tables.values(), keys=tables.keys(), 
-    names=['filename', 'index'])
-      .reset_index(level='filename')
-      .reset_index(drop=True)
-)
+df = pd.read_csv(files[0])
 df.head()
 ```
 
+To combine the different tables into one, we first read each CSV file and store its contents in a list of DataFrames. For each file, we extract the filename using `Path(f).name` and add it as a new column called filename using `.assign`. After all the individual DataFrames are collected in the list dfs, we use `pd.concat` to concatenate them into a single DataFrame.
+`ignore_index=True` ensures the concatenated DataFrame gets a new continuous index instead of keeping the original indices from each file.
+
+```{python}
+dfs = []
+for f in files:
+    name = Path(f).name
+    df = pd.read_csv(f).assign(filename=name)
+    dfs.append(df)
+
+df_concat = pd.concat(dfs, ignore_index=True)
+df_concat.head()
+```
+
+Alternatively, we can achieve the same result in a single line using a Python list comprehension.
+
+```{python}
+df_concat = (pd.concat([pd.read_csv(f).assign(filename=Path(f).name) 
+              for f in files], ignore_index=True)
+            )
+df_concat.head()
+```
 
 ## Merging tables
 
@@ -343,7 +348,7 @@ The four types of merges (also commonly called joins) are:
 
 * **Inner (default)**: consider only rows with matching values in the `on` columns.
 
-* **Outer or full (all)**: return all rows and columns from `x` and `y`. If there are no matching values, return NaNs.
+* **Outer or full (all)**: return all rows and columns from `x` and `y`. If there are no matching values, return NAs.
 
 * **Left (all.x)**: consider all rows from `x`, even if they have no matching row in `y`.
 
@@ -375,7 +380,7 @@ m
 
 
 ### Outer (full) merge
-An outer merge returns all rows and columns from `x` and `y`. If there are no matching values in `p_id`, it yields missing values (`NaN`):
+An outer merge returns all rows and columns from `x` and `y`. If there are no matching values in `p_id`, it yields missing values (`NA`):
 
 ```{python}
 # Outer (full) merge
@@ -384,7 +389,7 @@ m
 ```
 
 ## Left merge
-Returns all rows from `x`, even if they have no matching row in `y`. Rows from `x` with no matching `p_id` in `y` lead to missing values (`NaN`).
+Returns all rows from `x`, even if they have no matching row in `y`. Rows from `x` with no matching `p_id` in `y` lead to missing values (`NA`).
 ```{python}
 # Left merge 
 m = df1.merge(df2, on='p_id', how='left')
@@ -393,7 +398,7 @@ m
 
 
 ## Right merge
-Returns all rows from `y`, even if they have no matching row in `x`. Rows from `y` with no matching `p_id` in `x` lead to missing values (`NaN`).
+Returns all rows from `y`, even if they have no matching row in `x`. Rows from `y` with no matching `p_id` in `x` lead to missing values (`NA`).
 ```{python}
 # Right merge
 m = df1.merge(df2, on='p_id', how='right')

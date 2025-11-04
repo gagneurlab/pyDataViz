@@ -198,6 +198,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix04_Probabilities/script/appendix_04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Probabilities</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
     <nav id="TOC" role="doc-toc" class="toc-active">
@@ -275,7 +292,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="creating-and-loading-tables" class="level3" data-number="2.1.2">
 <h3 data-number="2.1.2" class="anchored" data-anchor-id="creating-and-loading-tables"><span class="header-section-number">2.1.2</span> Creating and loading DataFrames</h3>
 <p>To create a <code>DataFrame</code>, we can use a dictionary, where each key corresponds to a column name. All the columns have to have the same length. If vectors of different lengths are provided upon creation of a <code>DataFrame</code>, you’ll get an error. Here is an example:</p>
-<div id="58c89275" class="cell" data-execution_count="2">
+<div id="d052cc97" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install pandas</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"name"</span>: [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Charlie"</span>],</span>
@@ -323,7 +340,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>If we want to convert a numpy array or a list of lists or some other python objects to a <code>DataFrame</code>, all we have to do is to call the <code>pd.DataFrame()</code> constructor. You can also provide the names of the columns:</p>
-<div id="d72dbed7" class="cell" data-execution_count="3">
+<div id="e2dd5ecc" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.array([[<span class="dv">100</span>, <span class="dv">5</span>], [<span class="dv">80</span>, <span class="dv">7</span>]])</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data, columns <span class="op">=</span> [<span class="st">'Speed'</span>, <span class="st">'Time'</span>])</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -334,11 +351,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Here you can see that the function <code>type()</code> informs us that <code>df</code> is a <code>pandas</code> DataFrame.</p>
 <p>Alternatively, we can read files from disk and process them using <code>DataFrame</code>. The easiest way to do so is to use the functions <code>pd.read_csv()</code> or <code>pd.read_excel()</code>. Here is an example using a subset of the Kaggle flight and airports dataset that is limited to flights going in or to the Los Angeles airport. We refer to the description of the Kaggle flights and airports challenge for more details [https://www.kaggle.com/tylerx/flights-and-airports-data].</p>
 <p>We provide the file <code>flightsLAX.csv</code> as part of our datasets (See Datasets). To run the following code, save the comma-separated value file <code>flightsLAX.csv</code> into a local folder of your choice and replace the string <code>"path_to_file"</code> with the actual path to your <code>flightsLAX.csv</code> file. For example <code>"path_to_file"</code> could be substituted with <code>"/Users/samantha/mydataviz_folder/extdata"</code>.</p>
-<div id="14940e9f" class="cell" data-execution_count="4">
+<div id="d47cef42" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>flights <span class="op">=</span> pd.read_csv(<span class="st">'path_to_file/flightsLAX.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Typing the name of the newly created <code>DataFrame</code> (<code>flights</code>) in a notebook cell displays its first and last rows. We observe that reading the file was successful.</p>
-<div id="b3df008a" class="cell" data-execution_count="6">
+<div id="e035d2e4" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>flights</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
@@ -456,7 +473,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>A first step in any analysis should involve inspecting the data we just read in. This often starts by looking at the first and last rows of the table as we did above. You can also use functions <code>.head()</code> and <code>.tail()</code> to return 5 first or 5 last rows of a <code>DataFrame</code>:</p>
-<div id="ca98b263" class="cell" data-execution_count="7">
+<div id="320832d5" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>flights.head() <span class="co"># flights.tail()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
@@ -537,7 +554,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="inspecting-tables" class="level3" data-number="2.1.3">
 <h3 data-number="2.1.3" class="anchored" data-anchor-id="inspecting-tables"><span class="header-section-number">2.1.3</span> Inspecting tables</h3>
 <p>After looking at the first and last rows of the table (using <code>df.head()</code> and <code>df.tail()</code>), we are often interested in <strong>the size of our data set</strong>, which we can extract as dimensions of the underlying array:</p>
-<div id="425a7eba" class="cell" data-execution_count="8">
+<div id="ccfc3d52" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>flights.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>(389369, 12)</code></pre>
@@ -545,7 +562,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Alternatively you can use <code>len(flights)</code> for num rows and <code>len(flights.columns)</code> for columns. Note, that <code>index</code> is not counted as a column.</p>
 <p>We are also interested in columns of this DataFrame:</p>
-<div id="f68f508e" class="cell" data-execution_count="9">
+<div id="11d822ff" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>flights.columns</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>Index(['YEAR', 'MONTH', 'DAY', 'DAY_OF_WEEK', 'AIRLINE', 'FLIGHT_NUMBER',
@@ -556,7 +573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Next, we are often interested in <strong>basic statistics</strong> on the columns.</p>
 <p>To obtain this information we can call the <code>.describe()</code> function on the table:</p>
-<div id="738ab89e" class="cell" data-execution_count="10">
+<div id="d63d87ce" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>flights.iloc[:, :<span class="dv">6</span>].describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
@@ -647,7 +664,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This provides us already a lot of information about our data. We can for example see that all data is from 2015 as all values in the YEAR column are 2015.</p>
 <p>However, for categorical column basic statistics cannot be computed, so column <code>AIRLINE</code> is not in the output.To investigate categorical columns we can have a look at their unique elements using:</p>
-<div id="25369b95" class="cell" data-execution_count="11">
+<div id="33bbc53e" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>flights[<span class="st">'AIRLINE'</span>].unique()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>array(['AA', 'US', 'DL', 'UA', 'OO', 'AS', 'B6', 'NK', 'VX', 'WN', 'HA',
@@ -655,7 +672,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>This command provided us the airline identifiers present in the dataset. Another valuable information for categorical variables is how often each category occurs. This can be obtained using the following commands:</p>
-<div id="64a4bb4b" class="cell" data-execution_count="12">
+<div id="f7eb92a0" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>flights[<span class="st">'AIRLINE'</span>].value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>AIRLINE
@@ -681,7 +698,7 @@ Name: count, Length: 13, dtype: int64</code></pre>
 <ul>
 <li>Row index: labels each row (default = 0, 1, 2, …)</li>
 </ul>
-<div id="816f18b6" class="cell" data-execution_count="13">
+<div id="ed203088" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>flights.index</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>RangeIndex(start=0, stop=389369, step=1)</code></pre>
@@ -690,7 +707,7 @@ Name: count, Length: 13, dtype: int64</code></pre>
 <ul>
 <li>Column index: labels each column (the column names)</li>
 </ul>
-<div id="b84e506e" class="cell" data-execution_count="14">
+<div id="4d8c38fd" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>flights.columns <span class="co"># note, that this function returns "Index" object</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>Index(['YEAR', 'MONTH', 'DAY', 'DAY_OF_WEEK', 'AIRLINE', 'FLIGHT_NUMBER',
@@ -701,7 +718,7 @@ Name: count, Length: 13, dtype: int64</code></pre>
 </div>
 <p>Row index can be customized and any type: integers, strings, dates, tuples etc. Moreover, <code>pandas</code> will not control whether your index column contains only unique or ordered values, but unique, meaningful labels make data easier to work with. Index column can be used for row selection, row alignment when joining/combining tables, sorting and grouping.</p>
 <p>The function <code>set_index()</code> lets us turn a column into the row index:</p>
-<div id="5f00396d" class="cell" data-execution_count="15">
+<div id="b391b291" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"name"</span>: [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Charlie"</span>, <span class="st">"Peter"</span>],</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age"</span>: [<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">36</span>],</span>
@@ -756,7 +773,7 @@ Name: count, Length: 13, dtype: int64</code></pre>
 </div>
 </div>
 <p>The function <code>reset_index()</code> moves the index back into a regular column and parameter <code>names</code> allows giving a custom name to the newly created column:</p>
-<div id="fc1c607f" class="cell" data-execution_count="16">
+<div id="15223262" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df.reset_index(names<span class="op">=</span><span class="st">'name'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <div>
@@ -808,7 +825,7 @@ Name: count, Length: 13, dtype: int64</code></pre>
 <section id="subsetting-a-single-row" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="subsetting-a-single-row"><span class="header-section-number">2.2.2</span> Subsetting a single row</h3>
 <p>If we want to see the second row of the table, we can us <code>.loc[]</code> (by label) or <code>.iloc[]</code> (by position)</p>
-<div id="47e12eb7" class="cell" data-execution_count="17">
+<div id="81b1c63e" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df.loc[<span class="st">'Bob'</span>]   <span class="co"># Access the row with index value 'Bob'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>age        30
@@ -816,7 +833,7 @@ city    Paris
 Name: Bob, Length: 2, dtype: object</code></pre>
 </div>
 </div>
-<div id="de2fba3e" class="cell" data-execution_count="18">
+<div id="3aa50723" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df.iloc[<span class="dv">1</span>]   <span class="co"># Access the 2nd row </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>age        30
@@ -828,7 +845,7 @@ Name: Bob, Length: 2, dtype: object</code></pre>
 <section id="subsetting-multiple-rows" class="level3" data-number="2.2.3">
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="subsetting-multiple-rows"><span class="header-section-number">2.2.3</span> Subsetting multiple rows</h3>
 <p>For accessing <strong>multiple consecutive</strong> rows we can use the <code>start:stop</code> syntax with <code>iloc</code>:</p>
-<div id="8f58bf5d" class="cell" data-execution_count="19">
+<div id="0524e77b" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df.iloc[<span class="dv">0</span>:<span class="dv">2</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
 <div>
@@ -866,7 +883,7 @@ Name: Bob, Length: 2, dtype: object</code></pre>
 </div>
 </div>
 <p>Accessing multiple rows that are <strong>not necessarily consecutive</strong> can be done by creating a vector of <code>int</code> values:</p>
-<div id="0ff19343" class="cell" data-execution_count="20">
+<div id="66381d8e" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df.iloc[[<span class="dv">0</span>, <span class="dv">2</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <div>
@@ -904,7 +921,7 @@ Name: Bob, Length: 2, dtype: object</code></pre>
 </div>
 </div>
 <p>Accessing multiple rows <strong>by index</strong> can be done by creating a vector:</p>
-<div id="236c64e5" class="cell" data-execution_count="21">
+<div id="ab1103c6" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df.loc[[<span class="st">"Alice"</span>, <span class="st">"Charlie"</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <div>
@@ -957,7 +974,7 @@ Name: Bob, Length: 2, dtype: object</code></pre>
 </ul>
 <p>The syntax is following <code>table[condition]</code>.</p>
 <p>For example, entries of flights arriving to Miami International Airport can be extracted using <code>==</code>:</p>
-<div id="c23a0f03" class="cell" data-execution_count="22">
+<div id="8b54c018" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>flights[flights[<span class="st">'DESTINATION_AIRPORT'</span>] <span class="op">==</span> <span class="st">'MIA'</span>] </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <div>
@@ -1075,7 +1092,7 @@ Name: Bob, Length: 2, dtype: object</code></pre>
 </div>
 </div>
 <p>Note, that <code>flights['DESTINATION_AIRPORT'] == 'MIA'</code> is a so-called <strong>mask</strong>, that has the same length as the data frame and consists of <code>True</code> and <code>False</code>:</p>
-<div id="ddf75bb3" class="cell" data-execution_count="23">
+<div id="c59148d2" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>flights[<span class="st">'DESTINATION_AIRPORT'</span>]<span class="op">==</span> <span class="st">'MIA'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>0         False
@@ -1091,7 +1108,7 @@ Name: DESTINATION_AIRPORT, Length: 389369, dtype: bool</code></pre>
 </div>
 </div>
 <p>If we are now interested in to get all flights that depart from New York area, we can use <code>isin([list])</code>:</p>
-<div id="5b5d994a" class="cell" data-execution_count="24">
+<div id="65138186" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>flights[flights[<span class="st">'ORIGIN_AIRPORT'</span>].isin([<span class="st">'JFK'</span>, <span class="st">'EWR'</span>])]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="23">
 <div>
@@ -1209,7 +1226,7 @@ Name: DESTINATION_AIRPORT, Length: 389369, dtype: bool</code></pre>
 </div>
 </div>
 <p>We can also concatenate multiple conditions using the logical OR <code>|</code> or the logical AND <code>&amp;</code> operator. Always wrap conditions in <strong>parentheses</strong>!</p>
-<div id="359bd753" class="cell" data-execution_count="25">
+<div id="0382ca31" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>flights[(flights[<span class="st">'ORIGIN_AIRPORT'</span>].isin([<span class="st">'JFK'</span>, <span class="st">'EWR'</span>])) <span class="op">|</span> (flights[<span class="st">'DESTINATION_AIRPORT'</span>].isin([<span class="st">'JFK'</span>, <span class="st">'EWR'</span>]))  ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="24">
 <div>
@@ -1332,10 +1349,10 @@ Name: DESTINATION_AIRPORT, Length: 389369, dtype: bool</code></pre>
 <section id="handling-missing-values" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="handling-missing-values"><span class="header-section-number">2.3</span> Handling missing values</h2>
 <p>Missing values in <code>pandas</code> are encoded using <code>np.nan</code> for floats, <code>NaT</code> for datetime columns and <code>pd.NA</code> for all other data types. To check whether a value is missing, we cannot use equals-to (<strong><code>==</code></strong>) operator - instead one has to use <code>.isna()</code> or <code>.notna()</code>. In the following example we firstly set a value to <code>np.nan</code>:</p>
-<div id="8f7400a7" class="cell" data-execution_count="26">
+<div id="1f937d81" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>flights.loc[<span class="dv">6</span>, <span class="st">'DISTANCE'</span>] <span class="op">=</span> np.nan</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="9d0f9e9b" class="cell" data-execution_count="27">
+<div id="252edffb" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>flights[flights[<span class="st">'DISTANCE'</span>].isna()]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="26">
 <div>
@@ -1378,14 +1395,14 @@ Name: DESTINATION_AIRPORT, Length: 389369, dtype: bool</code></pre>
 <section id="introducing-series" class="level3" data-number="2.4.1">
 <h3 data-number="2.4.1" class="anchored" data-anchor-id="introducing-series"><span class="header-section-number">2.4.1</span> Introducing <code>Series</code></h3>
 <p>Each column of a <code>DataFrame</code> is a <code>Series</code>:</p>
-<div id="79fda043" class="cell" data-execution_count="28">
+<div id="2c60149b" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>destination <span class="op">=</span> flights[<span class="st">'DESTINATION_AIRPORT'</span>]</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(destination)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="27">
 <pre><code>pandas.core.series.Series</code></pre>
 </div>
 </div>
-<div id="3483b8e9" class="cell" data-execution_count="29">
+<div id="99b180de" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>destination</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="28">
 <pre><code>0         PBI
@@ -1410,7 +1427,7 @@ Name: DESTINATION_AIRPORT, Length: 389369, dtype: object</code></pre>
 <section id="accessing-one-or-multiple-columns" class="level3" data-number="2.4.2">
 <h3 data-number="2.4.2" class="anchored" data-anchor-id="accessing-one-or-multiple-columns"><span class="header-section-number">2.4.2</span> Accessing one or multiple columns</h3>
 <p>Since a DataFrame is just a collection of Series side by side, selecting a single column returns the corresponding Series. That’s how you can do it:</p>
-<div id="50f2e0e6" class="cell" data-execution_count="30">
+<div id="71dd8f2a" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>flights[<span class="st">'DESTINATION_AIRPORT'</span>] </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="29">
 <pre><code>0         PBI
@@ -1428,7 +1445,7 @@ Name: DESTINATION_AIRPORT, Length: 389369, dtype: object</code></pre>
 <p>Attribute access (<code>df.col</code>) is convenient, but <strong>does not work</strong> if column names have spaces or conflict with methods (e.g.&nbsp;<code>flights.DESTINATION_AIRPORT</code>).</p>
 <p>Although feasible (using <code>.iloc[]</code>), it is not advisable to access a column by its number since the ordering or number of columns can easily change. Also, if you have a data set with a large number of columns (e.g.&nbsp;50), how do you know which one is column 18? Therefore, we recommend to <strong>use the column names</strong> to access columns for preventing bugs and better readibility: <code>flights['DESTINATION_AIRPORT']</code> instead of <code>flights.iloc[, 8]</code>.</p>
 <p>To access multiple columns, you provide their names as a list:</p>
-<div id="84d314c3" class="cell" data-execution_count="31">
+<div id="b4ba339c" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>airport_columns <span class="op">=</span> [<span class="st">'ORIGIN_AIRPORT'</span>, <span class="st">'DESTINATION_AIRPORT'</span>]</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>flights[airport_columns]</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or directly flights[['ORIGIN_AIRPORT', 'DESTINATION_AIRPORT']]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1499,7 +1516,7 @@ Name: DESTINATION_AIRPORT, Length: 389369, dtype: object</code></pre>
 </div>
 <p>Note, that the returned object is a DataFrame.</p>
 <p>For accessing a specific entry (i.e.&nbsp;specific column and specific row), we can use the following syntax:</p>
-<div id="888be4c7" class="cell" data-execution_count="32">
+<div id="e601df77" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>flights.loc[<span class="dv">5</span>, <span class="st">'DESTINATION_AIRPORT'</span>]  <span class="co"># Access a specific cell.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="31">
 <pre><code>'IAH'</code></pre>
@@ -1510,7 +1527,7 @@ Name: DESTINATION_AIRPORT, Length: 389369, dtype: object</code></pre>
 <section id="groupby-operation" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="groupby-operation"><span class="header-section-number">2.5</span> Groupby operation</h2>
 <p>Often we want to compute summaries per category, for example: <em>average flight time per airline</em> or <em>number of flights per day</em>. For this we can use <code>groupby()</code>, that splits the data into groups. Note, that <code>groupby()</code> only <strong>defines</strong> the groups – you must follow it with an aggregation such as .mean(), .sum(), .count(), or .agg(…) to compute results.</p>
-<div id="12053459" class="cell" data-execution_count="33">
+<div id="515d032f" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>flights.groupby(<span class="st">"AIRLINE"</span>)[<span class="st">"AIR_TIME"</span>].mean().head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="32">
 <pre><code>AIRLINE
@@ -1524,7 +1541,7 @@ Name: AIR_TIME, Length: 5, dtype: float64</code></pre>
 </div>
 <p>The returned object is <code>Series</code> with unique <code>"AIRLINE"</code> values being in the index column.</p>
 <p>We can also compute the number of rows in each group using <code>.size()</code> directly after <code>groupby()</code> (or <code>.count()</code> on any column):</p>
-<div id="01dbe517" class="cell" data-execution_count="34">
+<div id="c2869ab9" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>flights.groupby(<span class="st">'AIRLINE'</span>).size()</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co"># flights.groupby('AIRLINE')["AIR_TIME"].count() will give the same result</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="33">
@@ -1542,7 +1559,7 @@ Length: 13, dtype: int64</code></pre>
 </div>
 </div>
 <p>Instead of selecting one column first, we can compute the mean of several <strong>numeric</strong> columns per group and the result will be a DataFrame:</p>
-<div id="7d573de2" class="cell" data-execution_count="35">
+<div id="e298bbbc" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>flights.groupby(<span class="st">'AIRLINE'</span>)[[<span class="st">'AIR_TIME'</span>, <span class="st">'DISTANCE'</span>]].mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="34">
 <div>
@@ -1616,7 +1633,7 @@ Length: 13, dtype: int64</code></pre>
 </div>
 <p>Note, that applying <code>.mean()</code> to non-numeric columns will result in an error.</p>
 <p>Sometimes we want to apply several operation to the same column simultaneiusly. Instead of one summary per column, <code>.agg()</code> lets us compute several stats at once—per group.</p>
-<div id="e9093ccd" class="cell" data-execution_count="36">
+<div id="bd44c113" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    flights.groupby(<span class="st">'AIRLINE'</span>).agg(</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>      {</span>
@@ -1752,7 +1769,7 @@ Length: 13, dtype: int64</code></pre>
 <section id="sorting-by-column" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="sorting-by-column"><span class="header-section-number">2.7</span> Sorting by column</h2>
 <p>Another common operation is sorting, that can be done using <code>.sort_values(col_name)</code> function:</p>
-<div id="4cba2e73" class="cell" data-execution_count="37">
+<div id="f64c8acd" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>flights.sort_values(<span class="st">'DISTANCE'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="36">
 <div>
@@ -1870,7 +1887,7 @@ Length: 13, dtype: int64</code></pre>
 </div>
 </div>
 <p>By default <code>sort_values()</code> sorts the column in ascending order (from the smallest to the largest value), but we can specify order using <code>ascending=...</code>:</p>
-<div id="843a905e" class="cell" data-execution_count="38">
+<div id="50e989f9" class="cell" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>flights.sort_values(<span class="st">'DISTANCE'</span>, ascending <span class="op">=</span> <span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="37">
 <div>
@@ -1988,7 +2005,7 @@ Length: 13, dtype: int64</code></pre>
 </div>
 </div>
 <p><code>sort_values()</code> function cannot be applied to index column, tehre we have to use <code>sort_index()</code>:</p>
-<div id="365f9db4" class="cell" data-execution_count="39">
+<div id="2d857610" class="cell" data-execution_count="39">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>flights.set_index(<span class="st">"FLIGHT_NUMBER"</span>).sort_index()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="38">
 <div>
@@ -2119,7 +2136,7 @@ Length: 13, dtype: int64</code></pre>
 <section id="extending-tables" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="extending-tables"><span class="header-section-number">2.8</span> Extending tables</h2>
 <p>We can create new columns by performing operations on existing ones:</p>
-<div id="6d30689e" class="cell" data-execution_count="40">
+<div id="c93a2cba" class="cell" data-execution_count="40">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>flights[<span class="st">"DIST_MILES"</span>] <span class="op">=</span> flights[<span class="st">"DISTANCE"</span>] <span class="op">*</span> <span class="fl">0.621371</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>flights.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="39">
@@ -2198,7 +2215,7 @@ Length: 13, dtype: int64</code></pre>
 </div>
 </div>
 <p>We can also combine columns to compute new values. Here we compute speed by dividing distance by air time:</p>
-<div id="997c8ae3" class="cell" data-execution_count="41">
+<div id="16c2c938" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>flights[<span class="st">"SPEED_MPH"</span>] <span class="op">=</span> (</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    flights[<span class="st">"DIST_MILES"</span>] <span class="op">/</span> flights[<span class="st">"AIR_TIME"</span>] <span class="op">*</span> <span class="dv">60</span></span>
 <span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -2279,7 +2296,7 @@ Length: 13, dtype: int64</code></pre>
 </div>
 </div>
 <p>To delete column, you can use <code>.drop()</code> function and provide column names as a list:</p>
-<div id="15775ec5" class="cell" data-execution_count="42">
+<div id="8bb3a7aa" class="cell" data-execution_count="42">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>flights.drop(columns <span class="op">=</span> [<span class="st">'DIST_MILES'</span>, <span class="st">'SPEED_MPH'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="41">
 <div>
@@ -2398,7 +2415,7 @@ Length: 13, dtype: int64</code></pre>
 </div>
 <p>This function return a new DataFrame by default. Use <code>inplace=True</code> to modify the DataFrame directly or assigned returned DataFrame to the same name: <code>flights = flights.drop(columns = ['DIST_MILES', 'SPEED_MPH'])</code>.</p>
 <p>To create a copy of the table you can use <code>.copy()</code>:</p>
-<div id="0c1432ac" class="cell" data-execution_count="43">
+<div id="40b674c8" class="cell" data-execution_count="43">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>flights_new <span class="op">=</span> flights.copy()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that <code>copy()</code> makes a <strong>deep copy</strong> by default <code>(deep=True)</code>. The new DataFrame has its own data and index and changes to <code>flights_new</code> won’t affect <code>flights</code>, and vice versa.</p>

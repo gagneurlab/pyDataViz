@@ -233,10 +233,10 @@ table3
 The number of votes per candidate is displayed in the numerator of the `proportion` column and the total number in the denominator.
 
 We split up the `proportion` column into two columns, one containing the votes and the other one containing the total votes with the method `str.split`:
-
+Since the resulting split columns inherit the initial `object` dtype (string), we explicitly cast them to integer type to enable downstream computations. 
 ```{python}
 table3[["votes", "total_votes"]] = table3["proportion"] \
-  .str.split("/", expand=True)
+  .str.split("/", expand=True).astype(int)
 table3
 ```
 
@@ -348,7 +348,7 @@ The four types of merges (also commonly called joins) are:
 
 * **Inner (default)**: consider only rows with matching values in the `on` columns.
 
-* **Outer or full (all)**: return all rows and columns from `x` and `y`. If there are no matching values, return NAs.
+* **Outer or full (all)**: return all rows and columns from `x` and `y`. If there are no matching values, return NaNs.
 
 * **Left (all.x)**: consider all rows from `x`, even if they have no matching row in `y`.
 
@@ -361,7 +361,7 @@ df1 = pd.DataFrame({
     'p_id': ['G008', 'F027', 'L051'],
     'value': np.random.normal(size=3)
 })
-display(df1.head)
+display(df1.head())
 df2 = pd.DataFrame({
     'p_id': ['G008', 'F027', 'U093'],
     'country': ['Germany', 'France', 'USA']
@@ -373,14 +373,14 @@ df2.head()
 
 An inner merge returns only rows with matching values in the `on` columns and discards all other rows:
 ```{python}
-# Inner merge, default one, all = FALSE
+# Inner merge, default one
 m = df1.merge(df2, on='p_id', how='inner')
 m
 ```
 
 
 ### Outer (full) merge
-An outer merge returns all rows and columns from `x` and `y`. If there are no matching values in `p_id`, it yields missing values (`NA`):
+An outer merge returns all rows and columns from `x` and `y`. If there are no matching values in `p_id`, it yields missing values (`NaN`):
 
 ```{python}
 # Outer (full) merge
@@ -389,7 +389,7 @@ m
 ```
 
 ## Left merge
-Returns all rows from `x`, even if they have no matching row in `y`. Rows from `x` with no matching `p_id` in `y` lead to missing values (`NA`).
+Returns all rows from `x`, even if they have no matching row in `y`. Rows from `x` with no matching `p_id` in `y` lead to missing values (`NaN`).
 ```{python}
 # Left merge 
 m = df1.merge(df2, on='p_id', how='left')
@@ -398,7 +398,7 @@ m
 
 
 ## Right merge
-Returns all rows from `y`, even if they have no matching row in `x`. Rows from `y` with no matching `p_id` in `x` lead to missing values (`NA`).
+Returns all rows from `y`, even if they have no matching row in `x`. Rows from `y` with no matching `p_id` in `x` lead to missing values (`NaN`).
 ```{python}
 # Right merge
 m = df1.merge(df2, on='p_id', how='right')
@@ -528,7 +528,7 @@ However, on the data analysis side  (front-end), we are not interested in mainta
 prod_df["totalPrice"] = prod_df["quantOrdered"] * prod_df["priceEach"]
 
 # group by operations, e.g. number of products per states 
-prod_df["N_prod"] = prod_df.groupby("state")["productCode"].transform("count")
+prod_df["N_prod"] = prod_df.groupby("state")["productCode"].count()
 ```
 
 Hence, the choice of the representation (normalized or not) depends on the context: back-end or front-end.

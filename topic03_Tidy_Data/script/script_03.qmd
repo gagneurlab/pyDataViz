@@ -196,7 +196,7 @@ Pandas **pivot** transforms a long table into a wide table and is achieved with 
 
 ```{python}
 #| eval: false
-wide = data.pivot(index=['<id>'], columns='<category>', 
+wide = data.pivot(index='<id>', columns='<pivot_variable>', 
 values='<value>').reset_index()
 ```
 

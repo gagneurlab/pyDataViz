@@ -13,8 +13,6 @@ execute:
 
 ---
 
-# Additional plotting tools
-
 ```{python}
 #| include: false
 

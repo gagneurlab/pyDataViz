@@ -713,7 +713,7 @@
     "href": "appendix03_Plotting/script/appendix_03.html",
     "title": "Appendix A — Additional plotting tools",
     "section": "",
-    "text": "B Additional plotting tools",
+    "text": "A.1 Plotting themes\nThemes control non-data parts of your plots, such as:\nThey control the appearance of your plots (size, color, position) but not how the data is represented. One example is theme_bw which provides a white background.\n(ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_point() +\n  theme_bw())\nOther complete themes are: theme_classic, theme_minimal, theme_light, theme_dark.",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>Additional plotting tools</span>"
@@ -723,8 +723,8 @@
     "objectID": "appendix03_Plotting/script/appendix_03.html#plotting-themes",
     "href": "appendix03_Plotting/script/appendix_03.html#plotting-themes",
     "title": "Appendix A — Additional plotting tools",
-    "section": "B.1 Plotting themes",
-    "text": "B.1 Plotting themes\nThemes control non-data parts of your plots, such as:\n\nOverall appearance\nAxes\nPlot title\nLegends\n\nThey control the appearance of your plots (size, color, position) but not how the data is represented. One example is theme_bw which provides a white background.\n\n(ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_point() +\n  theme_bw())\n\n\n\n\n\n\n\n\nOther complete themes are: theme_classic, theme_minimal, theme_light, theme_dark.",
+    "section": "",
+    "text": "Overall appearance\nAxes\nPlot title\nLegends",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>Additional plotting tools</span>"
@@ -734,8 +734,8 @@
     "objectID": "appendix03_Plotting/script/appendix_03.html#axes",
     "href": "appendix03_Plotting/script/appendix_03.html#axes",
     "title": "Appendix A — Additional plotting tools",
-    "section": "B.2 Axes",
-    "text": "B.2 Axes\nThe appearance of the axis titles can be controlled with the global variable axis_title, or independently for x and y using axis_title_x and axis_title_y.\n\n(ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_jitter() +\n  theme(axis_title=element_text(size=20, color='red')))\n\n\n\n\n\n\n\n\nSimilar for axis_text:\n\n(ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_jitter() +\n  theme(axis_text=element_text(size=20, color='blue')))\n\n\n\n\n\n\n\n\n\nB.2.1 Axis elements\nThe axis elements control the appearance of the axes:\n\n\n\n\n\n\n\n\nElement\nSetter\nDescription\n\n\n\n\naxis_line\nelement_line()\nline parallel to axis (hidden in default themes)\n\n\naxis_text\nelement_text()\ntick labels\n\n\naxis_text_x\nelement_text()\nx-axis tick labels\n\n\naxis_text_y\nelement_text()\ny-axis tick labels\n\n\naxis_title\nelement_text()\naxis titles\n\n\naxis_title_x\nelement_text()\nx-axis title\n\n\naxis_title_y\nelement_text()\ny-axis title\n\n\naxis_ticks\nelement_line()\naxis tick marks\n\n\naxis_ticks_length\nunit()\nlength of tick marks",
+    "section": "A.2 Axes",
+    "text": "A.2 Axes\nThe appearance of the axis titles can be controlled with the global variable axis_title, or independently for x and y using axis_title_x and axis_title_y.\n\n(ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_jitter() +\n  theme(axis_title=element_text(size=20, color='red')))\n\n\n\n\n\n\n\n\nSimilar for axis_text:\n\n(ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_jitter() +\n  theme(axis_text=element_text(size=20, color='blue')))\n\n\n\n\n\n\n\n\n\nA.2.1 Axis elements\nThe axis elements control the appearance of the axes:\n\n\n\n\n\n\n\n\nElement\nSetter\nDescription\n\n\n\n\naxis_line\nelement_line()\nline parallel to axis (hidden in default themes)\n\n\naxis_text\nelement_text()\ntick labels\n\n\naxis_text_x\nelement_text()\nx-axis tick labels\n\n\naxis_text_y\nelement_text()\ny-axis tick labels\n\n\naxis_title\nelement_text()\naxis titles\n\n\naxis_title_x\nelement_text()\nx-axis title\n\n\naxis_title_y\nelement_text()\ny-axis title\n\n\naxis_ticks\nelement_line()\naxis tick marks\n\n\naxis_ticks_length\nunit()\nlength of tick marks",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>Additional plotting tools</span>"
@@ -745,8 +745,8 @@
     "objectID": "appendix03_Plotting/script/appendix_03.html#plot-title",
     "href": "appendix03_Plotting/script/appendix_03.html#plot-title",
     "title": "Appendix A — Additional plotting tools",
-    "section": "B.3 Plot title",
-    "text": "B.3 Plot title\nThe appearance of the plot’s title can be controlled with the variable plot_title.\n\n(ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_jitter() +\n  ggtitle('CPI vs HDI') +\n  theme(plot_title=element_text(size=20, weight='bold')))",
+    "section": "A.3 Plot title",
+    "text": "A.3 Plot title\nThe appearance of the plot’s title can be controlled with the variable plot_title.\n\n(ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_jitter() +\n  ggtitle('CPI vs HDI') +\n  theme(plot_title=element_text(size=20, weight='bold')))",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>Additional plotting tools</span>"
@@ -756,8 +756,8 @@
     "objectID": "appendix03_Plotting/script/appendix_03.html#legend",
     "href": "appendix03_Plotting/script/appendix_03.html#legend",
     "title": "Appendix A — Additional plotting tools",
-    "section": "B.4 Legend",
-    "text": "B.4 Legend\nThe appearance of the legend can be controlled with legend_text and legend_title.\n\nbase = (ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_jitter())\n(base + theme(\n  legend_text=element_text(size=15),\n  legend_title=element_text(size=15, weight='bold'),\n  figure_size=(5,3)))\n\n\n\n\n\n\n\n\nThe legend elements control the appearance of all legends. You can also modify the appearance of individual legends by modifying the same elements in guide_legend() or guide_colorbar().\n\n\n\n\n\n\n\n\nElement\nSetter\nDescription\n\n\n\n\nlegend_background\nelement_rect()\nlegend background\n\n\nlegend_key\nelement_rect()\nbackground of legend keys\n\n\nlegend_key_size\nunit()\nlegend key size\n\n\nlegend_key_height\nunit()\nlegend key height\n\n\nlegend_key_width\nunit()\nlegend key width\n\n\nlegend_margin\nunit()\nlegend margin\n\n\nlegend_text\nelement_text()\nlegend labels\n\n\nlegend_text_align\n0–1\nlegend label alignment (0 = right, 1 = left)\n\n\nlegend_title\nelement_text()\nlegend name\n\n\nlegend_title_align\n0–1\nlegend name alignment (0 = right, 1 = left)",
+    "section": "A.4 Legend",
+    "text": "A.4 Legend\nThe appearance of the legend can be controlled with legend_text and legend_title.\n\nbase = (ggplot(ind, aes('CPI', 'HDI', color='region')) +\n  geom_jitter())\n(base + theme(\n  legend_text=element_text(size=15),\n  legend_title=element_text(size=15, weight='bold'),\n  figure_size=(5,3)))\n\n\n\n\n\n\n\n\nThe legend elements control the appearance of all legends. You can also modify the appearance of individual legends by modifying the same elements in guide_legend() or guide_colorbar().\n\n\n\n\n\n\n\n\nElement\nSetter\nDescription\n\n\n\n\nlegend_background\nelement_rect()\nlegend background\n\n\nlegend_key\nelement_rect()\nbackground of legend keys\n\n\nlegend_key_size\nunit()\nlegend key size\n\n\nlegend_key_height\nunit()\nlegend key height\n\n\nlegend_key_width\nunit()\nlegend key width\n\n\nlegend_margin\nunit()\nlegend margin\n\n\nlegend_text\nelement_text()\nlegend labels\n\n\nlegend_text_align\n0–1\nlegend label alignment (0 = right, 1 = left)\n\n\nlegend_title\nelement_text()\nlegend name\n\n\nlegend_title_align\n0–1\nlegend name alignment (0 = right, 1 = left)",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>Additional plotting tools</span>"

@@ -4268,16 +4268,13 @@ background-color: #f0f8ff;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#additional-plotting-tools" id="toc-additional-plotting-tools" class="nav-link active" data-scroll-target="#additional-plotting-tools"><span class="header-section-number">B</span> Additional plotting tools</a>
+  <li><a href="#plotting-themes" id="toc-plotting-themes" class="nav-link active" data-scroll-target="#plotting-themes"><span class="header-section-number">A.1</span> Plotting themes</a></li>
+  <li><a href="#axes" id="toc-axes" class="nav-link" data-scroll-target="#axes"><span class="header-section-number">A.2</span> Axes</a>
   <ul>
-  <li><a href="#plotting-themes" id="toc-plotting-themes" class="nav-link" data-scroll-target="#plotting-themes"><span class="header-section-number">B.1</span> Plotting themes</a></li>
-  <li><a href="#axes" id="toc-axes" class="nav-link" data-scroll-target="#axes"><span class="header-section-number">B.2</span> Axes</a>
-  <ul>
-  <li><a href="#axis-elements" id="toc-axis-elements" class="nav-link" data-scroll-target="#axis-elements"><span class="header-section-number">B.2.1</span> Axis elements</a></li>
+  <li><a href="#axis-elements" id="toc-axis-elements" class="nav-link" data-scroll-target="#axis-elements"><span class="header-section-number">A.2.1</span> Axis elements</a></li>
   </ul></li>
-  <li><a href="#plot-title" id="toc-plot-title" class="nav-link" data-scroll-target="#plot-title"><span class="header-section-number">B.3</span> Plot title</a></li>
-  <li><a href="#legend" id="toc-legend" class="nav-link" data-scroll-target="#legend"><span class="header-section-number">B.4</span> Legend</a></li>
-  </ul></li>
+  <li><a href="#plot-title" id="toc-plot-title" class="nav-link" data-scroll-target="#plot-title"><span class="header-section-number">A.3</span> Plot title</a></li>
+  <li><a href="#legend" id="toc-legend" class="nav-link" data-scroll-target="#legend"><span class="header-section-number">A.4</span> Legend</a></li>
   </ul>
 </nav>
 </nav>
@@ -4307,10 +4304,8 @@ background-color: #f0f8ff;
 </header>
 
 
-<section id="additional-plotting-tools" class="level1" data-number="B">
-<h1 data-number="B"><span class="header-section-number">B</span> Additional plotting tools</h1>
-<section id="plotting-themes" class="level2" data-number="B.1">
-<h2 data-number="B.1" class="anchored" data-anchor-id="plotting-themes"><span class="header-section-number">B.1</span> Plotting themes</h2>
+<section id="plotting-themes" class="level2" data-number="A.1">
+<h2 data-number="A.1" class="anchored" data-anchor-id="plotting-themes"><span class="header-section-number">A.1</span> Plotting themes</h2>
 <p>Themes control non-data parts of your plots, such as:</p>
 <ul>
 <li>Overall appearance</li>
@@ -4319,7 +4314,7 @@ background-color: #f0f8ff;
 <li>Legends</li>
 </ul>
 <p>They control the appearance of your plots (size, color, position) but not how the data is represented. One example is <code>theme_bw</code> which provides a white background.</p>
-<div id="1c794c4d" class="cell" data-execution_count="2">
+<div id="6022e386" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(ggplot(ind, aes(<span class="st">'CPI'</span>, <span class="st">'HDI'</span>, color<span class="op">=</span><span class="st">'region'</span>)) <span class="op">+</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  geom_point() <span class="op">+</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  theme_bw())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4333,10 +4328,10 @@ background-color: #f0f8ff;
 </div>
 <p>Other complete themes are: <code>theme_classic</code>, <code>theme_minimal</code>, <code>theme_light</code>, <code>theme_dark</code>.</p>
 </section>
-<section id="axes" class="level2" data-number="B.2">
-<h2 data-number="B.2" class="anchored" data-anchor-id="axes"><span class="header-section-number">B.2</span> Axes</h2>
+<section id="axes" class="level2" data-number="A.2">
+<h2 data-number="A.2" class="anchored" data-anchor-id="axes"><span class="header-section-number">A.2</span> Axes</h2>
 <p>The appearance of the axis titles can be controlled with the global variable <code>axis_title</code>, or independently for x and y using <code>axis_title_x</code> and <code>axis_title_y</code>.</p>
-<div id="65f060e3" class="cell" data-execution_count="3">
+<div id="f4a82958" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(ggplot(ind, aes(<span class="st">'CPI'</span>, <span class="st">'HDI'</span>, color<span class="op">=</span><span class="st">'region'</span>)) <span class="op">+</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  geom_jitter() <span class="op">+</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  theme(axis_title<span class="op">=</span>element_text(size<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span><span class="st">'red'</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4349,7 +4344,7 @@ background-color: #f0f8ff;
 </div>
 </div>
 <p>Similar for <code>axis_text</code>:</p>
-<div id="84293b35" class="cell" data-execution_count="4">
+<div id="57d1a363" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(ggplot(ind, aes(<span class="st">'CPI'</span>, <span class="st">'HDI'</span>, color<span class="op">=</span><span class="st">'region'</span>)) <span class="op">+</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  geom_jitter() <span class="op">+</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  theme(axis_text<span class="op">=</span>element_text(size<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span><span class="st">'blue'</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4361,8 +4356,8 @@ background-color: #f0f8ff;
 </div>
 </div>
 </div>
-<section id="axis-elements" class="level3" data-number="B.2.1">
-<h3 data-number="B.2.1" class="anchored" data-anchor-id="axis-elements"><span class="header-section-number">B.2.1</span> Axis elements</h3>
+<section id="axis-elements" class="level3" data-number="A.2.1">
+<h3 data-number="A.2.1" class="anchored" data-anchor-id="axis-elements"><span class="header-section-number">A.2.1</span> Axis elements</h3>
 <p>The axis elements control the appearance of the axes:</p>
 <table class="caption-top table">
 <colgroup>
@@ -4427,10 +4422,10 @@ background-color: #f0f8ff;
 </table>
 </section>
 </section>
-<section id="plot-title" class="level2" data-number="B.3">
-<h2 data-number="B.3" class="anchored" data-anchor-id="plot-title"><span class="header-section-number">B.3</span> Plot title</h2>
+<section id="plot-title" class="level2" data-number="A.3">
+<h2 data-number="A.3" class="anchored" data-anchor-id="plot-title"><span class="header-section-number">A.3</span> Plot title</h2>
 <p>The appearance of the plot’s title can be controlled with the variable <code>plot_title</code>.</p>
-<div id="6b7a6227" class="cell" data-execution_count="5">
+<div id="f63d6a5a" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(ggplot(ind, aes(<span class="st">'CPI'</span>, <span class="st">'HDI'</span>, color<span class="op">=</span><span class="st">'region'</span>)) <span class="op">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  geom_jitter() <span class="op">+</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  ggtitle(<span class="st">'CPI vs HDI'</span>) <span class="op">+</span></span>
@@ -4444,10 +4439,10 @@ background-color: #f0f8ff;
 </div>
 </div>
 </section>
-<section id="legend" class="level2" data-number="B.4">
-<h2 data-number="B.4" class="anchored" data-anchor-id="legend"><span class="header-section-number">B.4</span> Legend</h2>
+<section id="legend" class="level2" data-number="A.4">
+<h2 data-number="A.4" class="anchored" data-anchor-id="legend"><span class="header-section-number">A.4</span> Legend</h2>
 <p>The appearance of the legend can be controlled with <code>legend_text</code> and <code>legend_title</code>.</p>
-<div id="2df6ba84" class="cell" data-execution_count="6">
+<div id="9b31a1a6" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> (ggplot(ind, aes(<span class="st">'CPI'</span>, <span class="st">'HDI'</span>, color<span class="op">=</span><span class="st">'region'</span>)) <span class="op">+</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  geom_jitter())</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>(base <span class="op">+</span> theme(</span>
@@ -4531,7 +4526,6 @@ background-color: #f0f8ff;
 </table>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

@@ -409,6 +409,79 @@ dt = pd.DataFrame({
 
 Boxplots are also not suited for categorical data and discrete data with very few values, for which bar plots are preferred (@sec-barplots).
 
+### Assessing distributional assumptions with Q-Q Plots 
+
+As we will see in upcoming chapters, several tests assume that the data follows a particular distribution. We will now explore a plot which we can use to check whether such an assumption is reasonable.
+
+#### Limitations of Histograms
+
+We already know a plot which can be used to visualize distributions, namely the histogram. We might think that it could be used to check distributional assumptions. However, this is somewhat complicated by the difficulty of choosing the right bin size. Consider, for example, the following histogram, visualizing a sample taken from a uniform distribution on the interval 0 to 1.:
+
+```{python}
+#| fig-align: "center"
+x = np.random.rand(50)
+(ggplot(pd.DataFrame({'x': x}), aes(x='x'))
+  + geom_histogram(bins=20)
+  + mytheme)
+```
+
+Just looking at the histogram, it is hard to see that the underlying data comes from the uniform distribution. 
+
+#### Q-Q plots: Comparing empirical to theoretical quantiles 
+
+What could be a better approach here? One thing we can do is look at the quantiles.
+
+The basic idea here is as follows: if the data actually follows a uniform distribution on the interval 0 to 1, then we expect 10% of the data in the interval [0,0.1], 20% in the interval [0,0.2], and so on...
+
+We can now compute whether our data conforms to this expectation. We get that:
+```{python}
+dec = np.quantile(x, np.arange(0, 1.1, 0.1))
+dec
+```
+
+Here we implicitly chose to always make jumps of $10\%$. These quantiles are therefore called deciles.
+
+We can make a scatter plot which compares the expected and the theoretical deciles:
+
+```{python}
+#| fig-align: "center"
+(ggplot(pd.DataFrame({'x': np.arange(0,1.1,0.1), 'y':dec}), aes(x='x',y='y'))
+  + geom_point()
+  + xlim(0,1)
+  + ylim(0,1)
+  + xlab('Deciles of the uniform distribution')
+  + ylab('Deciles of the dataset')
+  + geom_abline(intercept=0, slope=1) # Add y=x line
+  + mytheme)
+```
+
+We see that they match quite well.
+
+For a finite sample we can estimate the quantile for every data point. One way is to use as expected quantile $(r-0.5)/N$ (Hazen, 1914), where $r$ is the rank of the data point.
+
+```{python}
+#| fig-align: "center"
+(ggplot(pd.DataFrame({'x': np.sort(x),
+                      'y': (np.arange(1, len(x)+1) - 0.5) / len(x)}), aes(x='y', y='x'))
+  + geom_point()
+  + xlim(0, 1)
+  + ylim(0, 1)
+  + xlab('Quantiles of the uniform distribution')
+  + ylab('Quantiles of the dataset')
+  + geom_abline(intercept=0, slope=1)
+  + mytheme)
+```
+
+This is called a Q-Q plot, which is short for Quantile-Quantile plot. When the distribution matches the data, as above, the points should be close the diagonal.
+
+#### Typical Q-Q plots
+
+@fig-qq_plot_examples gives more examples. We assume here the Normal distribution (Gaussian with mean 0 and variance 1) as reference theoretical distribution. These plots show how different violations of the distributional assumption translate to different deviations from the diagonal in a Q-Q plot.
+
+![Examples of Q-Q plots. The theoretical distribution is in each case the Normal distribution (Gaussian with mean 0 and variance 1). The upper row shows histograms of some observations, the lower row shows the matching Q-Q plots. The vertical red dashed line marks the theoretical mean (0, top row) and the red lines the y=x diagonal (bottom row).](../../assets/img/lec11-QQ-plots.png){#fig-qq_plot_examples width=900 fig-align="center"}
+
+The middle three plots show what happens when one particular aspect of the distributional assumption is incorrect. The second from the left shows what happens if the data has a mean higher than we expected, but otherwise follows the distribution. The middle one shows what happens if the data has fatter tails (i.e. more outliers) than we expected - this occurs frequently in practice. The second from the right shows what happens if the distribution is narrower than expected. The last plot shows a combination of these phenomena. There the data come from a non-negative asymmetric distribution ^[simulated with the Negative binomial distribution `np.random.negative_binomial(n=2, p=(2/102), num_samples)/100`.]. The Q-Q plot shows a lack of low values (capped at 0) and an excess of high values.
+
 ### Plots for two variables: one continuous, one discrete
 
 #### Barplots {#sec-barplots}

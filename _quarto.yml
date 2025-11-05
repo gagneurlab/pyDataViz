@@ -80,7 +80,9 @@ book:
         - topic02_Data_Wrangling/script/script_02.qmd
         - topic03_Tidy_Data/script/script_03.qmd
         - topic04_Plotting-I/script/script_04.qmd
+        - topic05_Plotting-II/script/script_05.qmd
      
-  appendices: 
+  appendices:
+    - appendix03_Plotting/script/appendix_03.qmd
     - appendix04_Probabilities/script/appendix_04.qmd
 

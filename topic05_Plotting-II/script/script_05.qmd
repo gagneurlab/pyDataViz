@@ -4,8 +4,6 @@ format:
   html:
     number-sections: true
     embed-resources: true
-header-includes:
-  - \usepackage{amsmath}
 execute:
   kernel: dataviz
   echo: true

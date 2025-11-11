@@ -441,6 +441,8 @@ dec
 
 Here we implicitly chose to always make jumps of $10\%$. These quantiles are therefore called deciles.
 
+The package `scipy` (Scientific Python) provides statistical methods in Python. It uses `numpy` underneath. For every implemented distribution, `scipy.stats` offers the random draw (`rvs`), the density (`pdf`), the cumulative disibtuion function (`cdf`), and its inverse (`ppf`) which allows you get quantiles e.g.: `norm.rvs()`, `uniform.rvs()`, etc... In general, these are not unbiased estimators.
+
 We can make a scatter plot which compares the expected and the theoretical deciles:
 
 ```{python}
@@ -587,14 +589,15 @@ Sometimes, too many colors can be hard to distinguish. In such cases, we can use
 
 ##### Text labeling
 
-For labeling the individual points in a scatter plot, `plotnine` offers the function `geom_text()`. However, these labels tend to overlap. To avoid this, we can use the library `ggrepel` which offers a better text labeling through the function `geom_text_repel()`.
+For labeling the individual points in a scatter plot, `plotnine` offers the function `geom_text()`. However, these labels tend to overlap. To avoid this, we can use the argument `adjust_text`.
 
 We first show the output of the classic text labeling with `geom_text()` for a random subset of 40 observations of the dataset `mpg`. Here we plot the engine displacement in liters `displ` vs. the highway miles per gallon `hwy` and label by `manufacturer`:
 
 ```{python}
 #| fig-align: "center"
 mpg_subset = mpg_df.sample(n=30, random_state=12)
-(ggplot(mpg_subset, aes('displ', 'hwy', label='manufacturer')) + geom_point() + geom_text() + mytheme)
+adjust_text_dict = {'arrowprops': {'arrowstyle': '-','color': 'grey'}}
+(ggplot(mpg_subset, aes('displ', 'hwy', label='manufacturer')) + geom_point() + geom_text(adjust_text=adjust_text_dict) + mytheme)
 ```
 
 ##### Log scaling {#sec-log-scaling}

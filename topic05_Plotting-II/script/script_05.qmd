@@ -245,8 +245,9 @@ sns.clustermap(X[["Horsepower","Weight"]], row_cluster=True, col_cluster=False, 
 #| fig-align: center
 tempdf = X[["Horsepower","Weight"]].copy()
 tempdf["label"] = X.index
-(ggplot(tempdf, aes(x="Horsepower", y="Weight", label="label")) + geom_point() +  geom_text() + 
-  mytheme + theme(figure_size=(4,4)))
+adjust_text_dict = {'arrowprops': {'arrowstyle': '-','color': 'grey'}}
+(ggplot(tempdf, aes(x="Horsepower", y="Weight", label="label")) + geom_point()
+  +  geom_text(adjust_text=adjust_text_dict) + mytheme + theme(figure_size=(4,4)))
 ```
 
 Unlike with K-means, there is no objective function associated with hierarchical clustering. Hierarchical clustering is simply defined by how it operates.
@@ -574,7 +575,7 @@ scores_df = pd.DataFrame(pca_res.transform(X),\
   columns = [f'PC{i+1}' for i in range(pca_res.n_components_)], \
     index=mat.index)
 p = (ggplot(scores_df, aes('PC1', 'PC2')) + geom_point()
-    + geom_text(aes(label='scores_df.index')) + mytheme)
+    + geom_text(aes(label='scores_df.index'), adjust_text=adjust_text_dict) + mytheme)
 p
 ```
 

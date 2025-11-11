@@ -591,7 +591,7 @@ load_df = pd.DataFrame({'xstart': 0.0, 'ystart': 0.0, 'label': mat.columns,
     'yend': pca_res.components_.T[:,1] * scale_y})
 (p + geom_segment(load_df, aes('xstart', 'ystart', xend='xend', yend='yend'), \
   color='tomato', arrow=arrow(length=0.1))
-+ geom_text(load_df, aes('xend', 'yend', label='label'), color='tomato', size=9))
++ geom_text(load_df, aes('xend', 'yend', label='label'), color='tomato', adjust_text=adjust_text_dict))
 ```
 
 ### PCA summary

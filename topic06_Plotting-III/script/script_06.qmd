@@ -1,28 +1,36 @@
 ---
-output:
-  pdf_document: default
-  html_document: default
+title: "Graphically Supported Hypotheses"
+format:
+  html:
+    number-sections: true
+    embed-resources: true
+execute:
+  kernel: dataviz
+  echo: true
+  fig-height: 3
+  fig-width: 4
+  warning: false
 ---
-\pagebreak
 
+```{python}
+#| include: false
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from plotnine import *
 
-```{r global_options3, include=FALSE, cache=F}
-library(data.table)
-library(gridExtra)
-library(ggplot2)
-library(magrittr)
-mysize <- 15
-mytheme <- theme(
-    axis.title = element_text(size=mysize), 
-    axis.text = element_text(size=mysize),
-    legend.title = element_text(size=mysize),
-    legend.text = element_text(size=mysize)
-    ) + theme_bw()
+# Set theme similar to original
+mysize = 9
+mytheme = (theme_bw() +
+           theme(axis_title=element_text(size=mysize),
+                 axis_text=element_text(size=mysize),
+                 legend_title=element_text(size=mysize),
+                 legend_text=element_text(size=mysize)))
 
+np.random.seed(0)
 ```
 
-
-# Graphically supported hypotheses {#graph-supported-hypos}
 
 In the last 2 chapters we presented the different types of plots. We now consider the task of structuring and presenting an entire analysis. We want to be able to provide novel insights from a dataset. Guided by the scientific method, a major aspect will be to give strong support for testable hypotheses. This is important in basic research to suggest experimental validations (does this gene affect growth?), but also for decision makers in public health (does smoking cause cancer?), public governance (would investing in education benefit economy?) or in the industry (would modifying a process increase productivity, modifying a product increases sales, etc.?).  
 
@@ -46,8 +54,14 @@ Descriptive plots correspond to descriptions of the distribution $p(X)$, where $
 
 As an example, we can consider the `diamonds` dataset which contains the prices and other attributes of several diamonds. To first visualize the distribution of the weights (`carat`) of the diamonds, we can build a histogram:  
 
-```{r carat-distrib, fig.height=3, message=FALSE}
-ggplot(diamonds, aes(carat)) + geom_histogram() + mytheme
+```{python}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+diamonds = sns.load_dataset('diamonds')
+(ggplot(diamonds, aes('carat')) + geom_histogram() + 
+  mytheme + theme(figure_size=(6, 4))
+  )
 ```
 
 ### Associative plots
@@ -62,11 +76,16 @@ In machine learning terms, associative plots correspond to methods from supervis
 
 Based on the same `diamonds` dataset, we can now construct an associative plot to graphically support the hypothesis that the price of a diamond increases with increasing weight (carat):
 
-```{r price-vs-carat, fig.height=3, fig.width=4, message=FALSE, warning=FALSE, fig.cap="Price increases nearly linearly with carat"}
-ggplot(diamonds, aes(carat, price)) + 
-  geom_point(alpha = 0.05) + # alpha: point transparency
-  stat_smooth() + mytheme
+```{python}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| fig-cap: "Price increases nearly linearly with carat"
+#| label: "fig-diamonds"
+(ggplot(diamonds, aes('carat', 'price')) + geom_point(alpha = 0.05) + 
+  mytheme + theme(figure_size=(4, 3)))
 ```
+
 
 ### Correctly using descriptive and associative plots
 
@@ -94,13 +113,12 @@ Often, the observed association between variables arose by chance. Would the dat
 
 1. The association is driven by few data points. Graphically showing all data points including outliers can help (See Anscombe's quartet ^[https://en.wikipedia.org/wiki/Anscombe%27s_quartet]). Hypothesis testing can be used to assess this possibility (See next Chapters). 
 
-2. The dataset includes so many variables that the chance to have one pair of variables associating is high. This is generally called data dredging, data fishing, data snooping, or cherry picking. An example of data dredging would be if we look through many results produced by a random process and pick the one that shows a relationship that supports a theory we want to defend. An example is given in Figure \@ref(fig:missamerica-murder).
+2. The dataset includes so many variables that the chance to have one pair of variables associating is high. This is generally called data dredging, data fishing, data snooping, or cherry picking. An example of data dredging would be if we look through many results produced by a random process and pick the one that shows a relationship that supports a theory we want to defend. An example is given in @fig-missamerica-murder. 
 
 In the statistical literature, this problem is called  "multiple testing". It will be treated in a later chapter. 
 
-```{r missamerica-murder, fig.width = 12, echo=FALSE, fig.cap="Example of a correlation discovered in a dataset with a very large set of variables. Source: http://www.tylervigen.com/spurious-correlations."}
-knitr::include_graphics("assets/img/lec06_tylervigen_missamerica_murders.png")
-```
+![Example of a correlation discovered in a dataset with a very large set of variables. Source: http://www.tylervigen.com/spurious-correlations.](../../assets/img/lec06_tylervigen_missamerica_murders.png){#fig-missamerica-murder fig-align="center" width="80%"}
+
 
 ### Reversing cause and effect
 
@@ -126,12 +144,10 @@ There is no firm way to decide the direction of causality from a mere associatio
 
 Another general issue is when an association is due to a third variable. There are several scenarios.
 
-Given two variables $x$ and $y$, we will now consider three basic configurations where a third variable $z$ could be causally related to them and how this affects associations between the variables $x$ and $y$ (Figure \@ref(fig:causal-diagrams)). We show causal relationships using causal diagrams where variables are nodes and causal links are depicted as directed arrows. We denote $x \perp y$ when variables $x$ and $y$ are statistically independent and $x \not\perp y$ when they are dependent. Also, $(x \perp y) | z$ means that $x$ and $y$ are independent given $z$.     
+Given two variables $x$ and $y$, we will now consider three basic configurations where a third variable $z$ could be causally related to them and how this affects associations between the variables $x$ and $y$  (@fig-causal-diagrams). We show causal relationships using causal diagrams where variables are nodes and causal links are depicted as directed arrows. We denote $x \perp y$ when variables $x$ and $y$ are statistically independent and $x \not\perp y$ when they are dependent. Also, $(x \perp y) | z$ means that $x$ and $y$ are independent given $z$.     
 
 
-```{r causal-diagrams, fig.width = 6, echo=FALSE, fig.cap="Elementary causal diagrams involving two variables of interest X and Y and a third variable Z."}
-knitr::include_graphics("assets/img/lec06_causal_diagrams.png")
-```
+![Elementary causal diagrams involving two variables of interest X and Y and a third variable Z.](../../assets/img/lec06_causal_diagrams.png){#fig-causal-diagrams fig-align="center" width="70%"}
 
 #### Common cause
 
@@ -168,69 +184,86 @@ We consider the following process:
 
 We then repeat this process $n=1,000$ times.
 
-In R this can done with the following code:
+In Python this can done with the following code:
 
-```{r}
+```{python}
 ###############
 ## common cause
 ## x <- z -> y
 ###############
-set.seed(0)
+np.random.seed(42)
 
-n <- 1000 # number of draws
+n = 1000 # number of draws
 
 # z: n draws of the binomial
 # with 2 trials and prob=0.5 
-z <- rbinom(n, 2, prob=0.5) 
+z = np.random.binomial(n=2, p=0.5, size=n)
 
 # x: Gaussian with mean z
-x <- rnorm(n, mean=z, sd=1)
+x = np.random.normal(loc=z, scale=1, size=n)
 
 # y: Gaussian with mean 2*z
-y <- rnorm(n, mean=2*z, sd=1)
+y = np.random.normal(loc=2 * z, scale=1, size=n)
 
-# gather into a data table
-# we make z a factor for convenience with plotting functions
-dt <- data.table(
-    x,y, 
-    z = factor(paste0("z=",z))
-  )
+# gather into a DataFrame
+# we make z a Categorical variable for convenience with plotting functions
+df_common_cause = pd.DataFrame({
+    'x': x,
+    'y': y,
+    'z': pd.Categorical(["z=" + str(val) for val in z])
+})
 ```
 
 We check whether the simulations worked. First, $z$ distributes as expected with about 25% draws with 0 heads, 50% with one head, and 25% with 2 heads:
 
-```{r}
-table(z)
+```{python}
+df_common_cause['z'].value_counts()
 ```
 
 Second, $x$ and $y$ depend on $z$:
-```{r, fig.width=4, fig.height=4}
-ggplot(dt, aes(x=z, y=x)) + geom_boxplot()
+```{python}
+(
+    ggplot(df_common_cause, aes(x='z', y='x')) +
+    geom_boxplot() + theme(figure_size = (4, 4))
+)
 ```
 
-```{r, fig.width=4, fig.height=4}
-ggplot(dt, aes(x=z, y=y)) + geom_boxplot()
+```{python}
+(
+    ggplot(df_common_cause, aes(x='z', y='y')) +
+    geom_boxplot() + theme(figure_size = (4, 4))
+)
 ```
+
 
 As a consequence, $x$ and $y$ correlate with each other:
 
-```{r, fig.width=4, fig.height=4, message=FALSE}
-# You can pick different formulae in geom_smooth
-ggplot(dt, aes(x=x, y=y)) + geom_point() + geom_smooth()
+```{python}
+(
+    ggplot(df_common_cause, aes(x='x', y='y')) +
+    geom_point(alpha=0.5) + labs(title="Pooled X vs Y") +
+    theme(figure_size = (4, 4))
+)
 ```
 
-```{r}
-cor(x,y)
+```{python}
+df_common_cause['x'].corr(df_common_cause['y'])
 ```
 
 This correlation between $x$ and $y$ is due to the common cause $z$. To show evidence for this issue, one can plot stratified by the values of $z$. In each group, there is no association between $x$ and $y$. 
-```{r, fig.width=12, fig.height=4}
-ggplot(dt, aes(x=x, y=y)) + geom_point() + facet_wrap(~z) + theme_bw(base_size = 14)
+```{python}
+(
+    ggplot(df_common_cause, aes(x='x', y='y')) +
+    geom_point(alpha=0.5) +
+    facet_wrap('~z') +
+    theme(figure_size = (4, 4))
+)
 ```
 
 Moreover, one can compute the correlation also stratified by the value of $z$. We see that in each group the correlation is near 0.
-```{r, fig.width=4}
-dt[, .(correlation=cor(x,y)), by=z]
+```{python}
+#| warning: false
+df_common_cause.groupby('z').apply(lambda df: df['x'].corr(df['y'])).to_frame('correlation')
 ```
 
 In our simulation, conditioning on a third variable has ruled out direct correlation and, therefore, causation. Statistically speaking, we can state that the two variables $x$ and $y$ *are* correlated, but their correlation is explained by $z$. Conditioned on $z$, their correlation is basically zero. This rules out a causal relationship from one to the other. Correlation never proves causation. However, conditioning can rule out causation.
@@ -242,40 +275,49 @@ We now simulate the case of an indirect association. To this end we consider the
 2. If $x=0$, we toss the coin once. If $x=1$, we toss the coins twice. We record $z$, the number of heads of this second step.
 3. We draw a value $y$ randomly according to a Gaussian distribution with mean equal to $z$ and standard deviation 0.5. Hence, $y$ will be a random real number that tend to have higher values with higher values of $z$.
 
-The following R code simulates such data:
+The following Python code simulates such data:
 
 
-```{r}
+```{python}
 # first step:  tossing a coin once
 # record x=1 if head, x=0 if tail.
-x <- rbinom(n, size=1, prob=0.5)
+x_indirect = np.random.binomial(n=1, p=0.5, size=n)
 
 # second step
 # if x=0, toss the coin once, if x=1, toss the coins twice
 # record z the number of heads of this second step. 
-z <- rbinom(n, size=x+1, prob=0.5) 
+z_indirect = np.random.binomial(n=x_indirect + 1, p=0.5, size=n)
 
 ## y: Gaussian with mean=z
-y <- rnorm(n, mean=z, sd=0.5)
+y_indirect = np.random.normal(loc=z_indirect, scale=0.5, size=n)
 
-dt <- data.table(
-  x = factor(paste0("x=",x)),
-  y, 
-  z = factor(paste0("z=",z))
-)
+df_indirect = pd.DataFrame({
+    'x': pd.Categorical(["x=" + str(val) for val in x_indirect]),
+    'y': y_indirect,
+    'z': pd.Categorical(["z=" + str(val) for val in z_indirect])
+})
 ```
 
 We see that $y$ associates with $x$:
 
-```{r, fig.width=4, fig.height=4}
-ggplot(dt, aes(x=x, y=y)) + geom_boxplot()
+```{python}
+(
+    ggplot(df_indirect, aes(x='x', y='y')) +
+    geom_boxplot() + 
+    theme(figure_size = (4, 4))
+)
 ```
 
 However this association vanishes when we condition on $z$:
 
-```{r, fig.width=12, fig.height=4}
+```{python}
 ## y does not associate with x given z
-ggplot(dt, aes(x=x, y=y)) + geom_boxplot() + facet_wrap(~z)
+(
+    ggplot(df_indirect, aes(x='x', y='y')) +
+    geom_boxplot() + 
+    facet_wrap('~z') +
+    theme(figure_size = (12, 4))
+)
 ```
 
 Conditioning on the third variable has helped ruling out a direct causal relation between $x$ and $y$. Note, however, that in this simulation there is an indirect causal relation between $x$ and $y$. From an observational data point of view, the situation is very similar to the common cause situation. Interpretations from the application field are needed to suggest whether such data supports an indirect association or a common cause. 
@@ -283,21 +325,27 @@ Conditioning on the third variable has helped ruling out a direct causal relatio
 A concrete example of an indirect association is provided by Rafael Irizzary in his book "Introduction to Data Science" which we reproduce in the following.
 
 For this, we consider the admission data from six U.C. Berkeley majors on 1973. The data shows at first sight that more men were being admitted than women: 44% men were admitted compared to 30% women. We can load the data and compute the percent of men and women that were accepted like this:
-```{r, message=F, warning=F}
-library(dslabs)
-data(admissions)
-admissions <- as.data.table(admissions)
-admissions[, sum(admitted*applicants)/sum(applicants), by=gender]
+```{python}
+df_admissions = pd.read_csv("../../extdata/UCBAdmissions.csv", index_col=0)
+df_admissions['is_admitted'] = np.where(df_admissions['Admit'] == 'Admitted', 1, 0)
+(
+    df_admissions.groupby('Gender')
+    .apply(lambda g: (g['is_admitted'] * g['Freq']).sum() / g['Freq'].sum())
+    .to_frame('Admission Rate')
+)
 ```
 
 
 Closer inspection shows a paradoxical result. Here are the percent admissions by major:
 
-```{r}
-stats <- admissions[, c('major', 'gender', 'admitted')] %>% 
-  dcast(...~gender, value.var='admitted') %>% 
-    .[, women_minus_men := women - men]
-head(stats)
+```{python}
+stats = (
+    df_admissions.groupby(['Dept', 'Gender'])
+    .apply(lambda g: (g['is_admitted'] * g['Freq']).sum() / g['Freq'].sum())
+    .unstack(level='Gender') # Pivot 'Gender' to columns (dcast equivalent)
+    .assign(women_minus_men=lambda x: x['Female'] - x['Male']) # Calculate difference
+)
+stats
 ```
 
 Four out of the six majors favor women. More importantly, all the differences are much smaller than the 14.2 difference that we see when examining the totals.
@@ -308,12 +356,23 @@ We define three variables: $X$ is 1 for men and 0 for women, $Y$ is 1 for those 
 
 One way to see this is to plot the total percent admitted to a major versus the percent of women that made up the applicants:
 
-```{r uc-berkeley-majors}
-admissions %>% 
-  .[, .(sum(admitted * applicants)/sum(applicants),
-        sum(applicants * (gender=="women")) /sum(applicants) * 100), by=major] %>%
-  ggplot(aes(V1, V2, label = major)) +
-  geom_text() + labs(x='Major Selectivity', y='Percent Women Applicants') + mytheme
+```{python}
+df_admissions['is_female'] = np.where(df_admissions['Gender'] == 'Female', 1, 0)
+
+selectivity_versus_percentage_women = (
+    df_admissions.groupby('Dept')
+    .agg(
+        selectivity_rate=('Freq', 
+            lambda x: (df_admissions.loc[x.index, 'is_admitted'] * x).sum() / x.sum()
+        ),
+        percent_women_applicants=('Freq', 
+            lambda x: (df_admissions.loc[x.index, 'is_female'] * x).sum() / x.sum() * 100
+        )
+    ).reset_index()
+)
+( ggplot(selectivity_versus_percentage_women, aes('selectivity_rate', 'percent_women_applicants', label = 'Dept')) +
+  geom_text() + labs(x='Major Selectivity', y='Percent Women Applicants')+
+    theme(figure_size = (6, 4)))
 ```
 
 There seems to be association. The plot suggests that women were much more likely to apply to the two "hard" majors: gender and major's selectivity are confounded. Compare, for example, major B and major E. Major E is much harder to enter than major B and over 60% of applicants to major E were women, while less than 30% of the applicants of major B were women. 
@@ -321,27 +380,24 @@ There seems to be association. The plot suggests that women were much more likel
 
 The following plot shows the number of applicants that were admitted and those that were not by gender and major:
 
-```{r}
-admissions_plot <- admissions[, `:=`(yes = round(admitted/100*applicants), 
-                no = round(applicants - admitted/100*applicants )),
-           by=.(major, gender)] %>%
-  melt(measure.vars=c('yes', 'no'), value.name='number_of_students',
-       variable.name='admission') 
-
-ggplot(admissions_plot, aes(gender, number_of_students, fill = admission)) +
+```{python}
+(ggplot(df_admissions, aes('Gender', 'Freq', fill = 'Admit')) +
   geom_bar(stat = "identity", position = "dodge") +
-  facet_wrap(. ~ major)
+  facet_wrap('~Dept') +
+  labs(x = "Gender", y = 'Number of students')+
+    theme(figure_size = (6, 4)))
 ```
 
 The visualization breaks down the acceptances by major. This breakdown allows us to see that the majority of accepted men came from two majors: A and B. It also lets us see that few women applied to these majors. 
 
 Changing the position to `"fill"` in `geom_bar()` returns the following plot:
  
-```{r}
-ggplot(admissions_plot, aes(gender, number_of_students, fill = admission)) +
+```{python}
+(ggplot(df_admissions, aes('Gender', 'Freq', fill = 'Admit')) +
   geom_bar(stat = "identity", position = "fill") +
-  ylab("proportion admitted") +
-  facet_wrap(. ~ major)
+  facet_wrap('~Dept') +
+  labs(x = "Gender", y = 'Number of students')+
+    theme(figure_size = (6, 4)))
 ```
 
 Setting `"fill"` as the position argument makes each set of stacked bars to have the same height. This makes it easier to compare proportions across groups. However, note that it can be hard to compare some groups with increasing number of stacked bars.
@@ -371,31 +427,51 @@ We can use the computer to simulate such a situation as:
 
 The following code simulates such data:
 
-```{r}
+```{python}
 #############
 ## common consequence x->z<-y
 #############
-x <- rnorm(n)  # talent for acting
-y <- rnorm(n)  # beauty
-z <- x+y > 1  
+x_conseq = np.random.normal(0, 1, n)
+y_conseq = np.random.normal(0, 1, n)
+z_conseq = (x_conseq + y_conseq) > 1
 
-dt <- data.table(x, y, z)
+df_conseq = pd.DataFrame({
+    'x': x_conseq,
+    'y': y_conseq,
+    'z': z_conseq
+})
 ```
 
 In our simulated population, beauty and talent for acting do not correlate:
 
-```{r, fig.width=4, fig.height=4}
-## x and y do not associate
-ggplot(dt, aes(x=x, y=y)) + geom_point() + labs(x = 'Talent for acting', y = 'Beauty')
-cor(x,y)
+```{python}
+(
+    ggplot(df_conseq, aes(x='x', y='y')) +
+    geom_point(alpha=0.5) + 
+    labs(x = 'Talent for acting', y = 'Beauty') + 
+    theme(figure_size = (4, 4))
+)
+```
+
+```{python}
+df_conseq['x'].corr(df_conseq['y'])
 ```
 
 The fun paradox comes when we restrict our analysis to the Hollywood stars: 
 
-```{r, fig.width=4, fig.height=4}
+```{python}
 ## x associates with y when z is TRUE
-ggplot(dt[z == TRUE], aes(x=x, y=y)) + geom_point() + labs(x = 'Talent for acting', y = 'Beauty')
-dt[z, cor(x,y)]
+df_conseq_filter = df_conseq[df_conseq.z == False]
+(
+    ggplot(df_conseq_filter, aes(x='x', y='y')) +
+    geom_point(alpha=0.5) +
+    labs(x = 'Talent for acting', y = 'Beauty') +
+    theme(figure_size = (4, 4))
+)
+```
+
+```{python}
+df_conseq_filter['x'].corr(df_conseq_filter['y'])
 ```
 
 Hence, beautiful Hollywood stars tend to act worse than than less beautiful stars.
@@ -409,34 +485,51 @@ Altogether, the association arises once we condition on the third variable. This
 In 1951, Simpson demonstrated that a statistical relationship observed within a group of individuals could be reversed within all subgroups that make up that population. This phenomenon, where a variable X seems to relate to a second variable Y in a certain way, but flips direction when the stratifying for another variable Z, has since been referred to as Simpson’s paradox.
 
 
-```{r simpson-paradox, fig.width = 4, echo=FALSE, out.width ="500px", fig.cap="Simpson's paradox. The sign (+ or -) designates positive or negative effects (causal diagram, left) or associations (right)."}
-knitr::include_graphics("assets/img/lec06_simpson_paradox.png")
-```
 
-We simulate a dataset for illustrating the Simpson's paradox with the help of the function `simulate_simpson()` from the library `correlation`:
+![Simpson's paradox. The sign (+ or -) designates positive or negative effects (causal diagram, left) or associations (right).](../../assets/img/lec06_simpson_paradox.png){fig-align="center" width="80%"}
 
-```{r}
-# devtools::install_github("easystats/correlation")
-library(correlation)
-data <- simulate_simpson(n = 100, groups = 4, r = 0.6) %>% as.data.table
-colnames(data) <- c('X', 'Y', 'Z')
-data
+To illustrate the Simpson's paradox we simulate a dataset with three variables: X, Y, Z. 
+```{python}
+#| echo: false
+#| eval: true
+def simulate_simpson_data(num_groups=4, n_per_group=100, group_slope=1.5, noise_sd=1.5):
+    """Generates data for Simpson's Paradox (Overall Negative, Within Positive)."""
+    np.random.seed(42)
+    data_list = []
+    x_shift_base = np.linspace(1, 5.5, num_groups) 
+    y_intercept_shift = np.linspace(5, -5, num_groups) 
+
+    for i in range(num_groups):
+        group_label = f"G_{i+1}"
+        x = np.random.normal(loc=x_shift_base[i], scale=0.85, size=n_per_group)
+        y = y_intercept_shift[i] + group_slope * x + np.random.normal(0, noise_sd, n_per_group)
+        df_group = pd.DataFrame({'X': x, 'Y': y, 'Z': group_label})
+        data_list.append(df_group)
+    return pd.concat(data_list, ignore_index=True)
+
+data = simulate_simpson_data()
+data['Z'] = pd.Categorical(data['Z'])
 ```
 
 When visualizing the relationship between the variables `X` and `Y`, we observe a negative correlation between `X` and `Y`:
 
-```{r, warning=F, message=F}
-ggplot(data, aes(X,Y)) + geom_point() + geom_smooth(method='lm') + mytheme
+```{python}
+#| fig-align: "center"
+(ggplot(data, aes('X','Y')) + 
+  geom_point() + 
+  geom_smooth(method='lm', color = 'blue') + 
+  mytheme + theme(figure_size=(6, 4)))
 ```
+
 
 However, when grouping by the variable Z, we observe a positive correlation which is the opposite direction as before:
 
-
-```{r, warning=F, message=F}
-ggplot(data, aes(x = X, y = Y)) +
-  geom_point(aes(color = Z)) +
-  geom_smooth(aes(color = Z), method = "lm") +
-  geom_smooth(method = "lm") + mytheme
+```{python, warning=F}
+#| fig-align: "center"
+(ggplot(data, aes(x = 'X', y = 'Y')) +
+  geom_point(aes(color = 'Z')) + geom_smooth(aes(color = 'Z'), method = "lm") +
+  geom_smooth(method = "lm", color = 'blue') + 
+  mytheme + theme(figure_size=(6, 4)))
 ```
 
 <!-- https://paulvanderlaken.com/2017/09/27/simpsons-paradox-two-hr-examples-with-r-code/ -->
@@ -478,7 +571,7 @@ Sometimes, however, we do want to show more complex figures that contain a large
 
 Usually, we first show descriptive plots to first present the data and let the audience be able to understand the data. Then, we use associative plots to support claims, results and hypotheses.
 
-Ideally, one slide contains exactly one claim supported by one plot. For this, the plot type should be chosen carefully. The title of the slide or figure is a very important element. The title should give the take-home message of the presented visualizations. It is a clear and simple interpretation of the plot. For instance, a title such as "Scatterplot of diamond price versus carat" for Figure \@ref(fig:price-vs-carat) would not be informative since it is evident from the type of the plot and the axis labels that we look at a scatter plot of price versus carat. More informative is your interpretation of it, which the reader can judge from the plot. Do you want to claim that "Price increases nearly linearly with carat", or rather that "There remains much price variation among diamonds with the same carat"? Such statements make informative slide titles.
+Ideally, one slide contains exactly one claim supported by one plot. For this, the plot type should be chosen carefully. The title of the slide or figure is a very important element. The title should give the take-home message of the presented visualizations. It is a clear and simple interpretation of the plot. For instance, a title such as "Scatterplot of diamond price versus carat" for @fig-diamonds would not be informative since it is evident from the type of the plot and the axis labels that we look at a scatter plot of price versus carat. More informative is your interpretation of it, which the reader can judge from the plot. Do you want to claim that "Price increases nearly linearly with carat", or rather that "There remains much price variation among diamonds with the same carat"? Such statements make informative slide titles.
 
 
 #### Closure
@@ -489,40 +582,39 @@ The presentation should ideally have a strong closure. We can usually start with
 
 Colors are an effective and powerful medium for communicating meaning. In data visualization, color sets the tone and enforces a message for the underlying visual display.  
 
-### Color coding in R
+### Color coding in Python
 
-Basically, there are four options for color coding with `ggplot2` in R:
+There are several options for color coding with `plotnine` and `seaborn` in Python:
 
 1. Using default colors
+
 2. Explicitly setting color names (e.g. "red", "blue")
+
 3. Explicitly setting RGB or HTML color codes (e.g. 00-FF)
-4. Explicitly setting color palettes
 
 #### Color palettes 
 
-The package `RColorBrewer` provides a comprehensive set of nice color palettes:
+The package `seaborn` provides a comprehensive set of nice color palettes:
 
-```{r, eval=F}
-library(RColorBrewer)
-display.brewer.all()
-```
-
-```{r, out.width = "200px", echo=F}
-knitr::include_graphics("assets/img/palettess.png")
-```
+![](../../assets/img/lec06_palettes_seaborn.png){fig-align="center" width=70%}
 
 
 Generally, we use sequential palettes for continuous variables to show quantitative differences: 
 
-```{r, out.width = "200px", echo=F}
-knitr::include_graphics("assets/img/lec07_col_seq_pal.png")
+```{python}
+#| echo: false
+#| eval: true
+sns.light_palette("seagreen", as_cmap=True)
 ```
 
 We use qualitative palettes for categorical variables to separate items into distinct groups and we use diverging palettes for numeric variables that have a meaningful central value or breakout point (e.g. 0).
 
-```{r, out.width = "200px", echo=F}
-knitr::include_graphics("assets/img/lec07_col_div_pal.png")
+```{python}
+#| echo: false
+#| eval: true
+sns.color_palette("vlag", as_cmap=True)
 ```
+
 
 ### General rules for color coding
 
@@ -534,9 +626,7 @@ If we want different objects of the same color in a table or graph to look the s
 
 In the following example, the squares seem to have a different color but they actually don't. The background makes it hard to compare them. 
 
-```{r, out.width = "500px", echo=F}
-knitr::include_graphics("assets/img/lec07_col_contrast.png")
-```
+![](../../assets/img/lec07_col_contrast.png){fig-align="center" width="80%"}
 
 **Rule #2: sufficient contrast for visibility**
 
@@ -548,11 +638,27 @@ We use color coding only when we really need it to serve a particular communicat
 
 In the following example, the added colors provide no additional information:
 
-```{r, warning=F, results='hide', echo=F, fig.height=5, fig.width=5}
-poke_dt <- readRDS('extdata/tidy_pokemon_poke_dt.RDS')
-dt <- poke_dt[,.(mean_hp = mean(HP, na.rm=T)), by=Type][order(mean_hp)]
-dt[,Type:= factor(Type, levels = as.character(Type))]
-ggplot(dt, aes(Type, mean_hp)) + geom_bar(stat = 'identity', aes(fill = Type)) + coord_flip() + mytheme
+```{python}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+df = pd.read_excel("../../extdata/pokemon.xlsx")
+df = df[['Type', 'HP']]
+df_for_plotting = df.groupby('Type').mean().reset_index().rename({'index': 'Type'}).sort_values('HP').head(10)
+
+df_for_plotting['Type'] = pd.Categorical(
+    df_for_plotting['Type'],
+    categories=df_for_plotting['Type'],
+    ordered=True
+)
+type_order = df_for_plotting['Type'].tolist()
+type_order = type_order[::-1]
+
+tab12_colors = sns.color_palette("tab20", n_colors=10).as_hex()
+(ggplot(df_for_plotting, aes('Type', 'HP')) + 
+  geom_bar(aes(fill = 'Type'), stat = 'identity') + 
+  scale_fill_manual(values=tab12_colors, limits = type_order) + 
+  coord_flip() + mytheme + theme(figure_size = (5, 5)))
 ```
 
 
@@ -576,12 +682,17 @@ Keeping simple visualizations is probably the most important guideline. Often pe
 
 Figure title (or slide tile) states the finding (what do we observe?) and not the methods (how do you do it?). For example a good title is "The further away an airport, the longer the flight" instead of "Scatter-plotting air time and distance". 
 
-```{r artist, out.width = "500px", message=FALSE, warning=FALSE}
-flightsLAX <- fread('extdata/casestudy1/flightsLAX.csv')
-ggplot(flightsLAX, aes(DISTANCE, AIR_TIME)) + 
+```{python}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+flightsLAX = pd.read_csv('../../extdata/flightsLAX.csv')
+(ggplot(flightsLAX.head(2000), aes('DISTANCE', 'AIR_TIME')) +
   geom_point(alpha=0.2) +
-  geom_smooth(method='lm') + 
-  labs(title = 'The further away an airport, the longer the flight') + mytheme
+  geom_smooth(method='lm', color= 'blue') +
+  labs(title = 'The further away an airport, the longer the flight',
+       x = 'Distance', y = 'Flight duration') + mytheme 
+       + theme(figure_size = (6, 4), legend_title = element_text(size=7)))
 ```
 
 **Always label the axes**
@@ -602,17 +713,30 @@ When using barplots, it is typically dishonest not to start the bars at 0. This 
 
 We can have a look at this illustrative example:
 
-```{r, out.width = "500px", echo=F}
-knitr::include_graphics("assets/img/chart_junk.jpg")
-```
+![](../../assets/img/chart_junk.jpg){fig-align="center" width="60%"}
+
 
 The plot was shown by Fox News (http://mediamatters.org/blog/2013/04/05/fox-news-newest-dishonest-chart-immigration-enf/193507).
 From the plot above, it appears that apprehensions have almost tripled, when in fact they have only increased by about 16%. Starting the graph at 0 illustrates this clearly: 
 
-```{r, lec07_include0, fig.height=4, fig.width=4, echo=FALSE}
-data.frame(Year = as.character(c(2011, 2012, 2013)),Southwest_Border_Apprehensions = c(165244,170223,192298)) %>%
-  ggplot(aes(Year, Southwest_Border_Apprehensions )) +
-  geom_bar(stat = "identity", fill = "grey", width = 0.65) + theme_bw()
+```{python}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+
+df_small = pd.DataFrame({'Year': [2011, 2012, 2013], 'Southwest_Border_Apprehensions': [165244,170223,192298]})
+df_small['Year'] = pd.Categorical(
+    df_small['Year'],
+    categories=df_small['Year'],
+    ordered=True
+)
+print("\n")
+(
+  ggplot(df_small, aes('Year', 'Southwest_Border_Apprehensions' )) +
+  geom_bar(stat = "identity", fill = "grey", width = 0.65) + mytheme +
+  labs( y = "Southwest Border Apprehensions") + 
+  theme(figure_size = (6, 4),  axis_text = element_text(size=7))
+)
 ```
 
 ### Don'ts
@@ -635,26 +759,40 @@ A good example of a transformation of a bad plot into a good plot can be obtaine
 
 The figure below, taken from the scientific literature ^[DNA Fingerprinting: A Review of the Controversy Kathryn Roeder Statistical Science Vol. 9, No. 2 (May, 1994), pp. 222-247] shows three variables: dose, drug type and survival. Although our screens are flat and two dimensional, the plot tries to imitate three dimensions and assigns a dimension to each variable.
 
-```{r, out.width = "500px", echo=FALSE}
-knitr::include_graphics("assets/fig/d3_plot.png")
-```
+
+![](../../assets/img/lec06_3d_plot.png){fig-align="center" width="60%"}
 
 However, humans are not good at seeing in three dimensions (which explains why it is hard to parallel park) and our limitation is even worse with pseudo-three-dimensions. To see this, we can try to determine the values of the survival variable in the plot above. Probably, we cannot really tell when the purple ribbon intersects the red one.
 
 Instead, we can easily use color to represent the categorical variable to avoid the pseudo 3 dimensional construction:
 
-```{r lec07_3d, fig.width=4, fig.height=4, echo=FALSE}
-##First read data
-url <- "https://github.com/kbroman/Talk_Graphs/raw/master/R/fig8dat.csv"
-dat <- read.csv(url) %>% as.data.table
-##Now make alternative plot
-dat %>% melt('log.dose',
-             variable.name='drug',
-             value.name='survival') %>%
-  .[, drug := gsub('Drug.', '', drug)] %>%
-  ggplot(aes(log.dose, survival, color = drug)) +
-  geom_line() + mytheme
+```{python}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+
+dat = pd.read_csv("../../extdata/Drug_survival.csv", index_col = 0)
+
+dat_long = dat.melt(
+    id_vars=['log dose'],
+    var_name='drug',
+    value_name='survival'
+)
+dat_long['drug'] = dat_long['drug'].str.replace('Drug.', '', regex=False)
+
+(
+    ggplot(dat_long, aes(x='log dose', y='survival', color='drug'))
+    + geom_line(size=1)
+    + labs(
+        x='Log Dose',
+        y='Survival',
+        color='Drug Type'
+    )
+    + mytheme
+    + theme(figure_size = (6, 4))
+)
 ```
+
 
 This plot demonstrates that using color is more than enough to distinguish the three lines.
 
@@ -693,4 +831,4 @@ By now, you should be able to:
 C. Bishop, Pattern Recognition and Machine Learning. https://www.microsoft.com/en-us/research/people/cmbishop/prml-book/
 
  
-\pagebreak
+

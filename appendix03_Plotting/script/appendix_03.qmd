@@ -1,0 +1,135 @@
+---
+title: "Additional plotting tools"
+format:
+  html:
+    number-sections: true
+    embed-resources: true
+execute:
+  kernel: dataviz
+  echo: true
+  fig-height: 3
+  fig-width: 4
+  warning: false
+
+---
+
+```{python}
+#| include: false
+
+import pandas as pd
+import numpy as np
+from plotnine import *
+import matplotlib.pyplot as plt
+from IPython.display import display, Image
+import matplotlib
+
+ind = pd.read_csv('../../extdata/CPI_HDI.csv').drop(columns=['Unnamed: 0'])
+
+# Plot theme similar to the original R `mytheme`
+mysize = 9
+mytheme = theme(
+    axis_title = element_text(size=mysize), 
+    axis_text = element_text(size=mysize),
+    legend_title = element_text(size=mysize),
+    legend_text = element_text(size=mysize),
+    ) + theme_minimal(base_size=mysize)
+
+np.random.seed(0)
+```
+
+## Plotting themes
+
+Themes control non-data parts of your plots, such as:
+
+* Overall appearance
+* Axes
+* Plot title
+* Legends
+
+They control the appearance of your plots (size, color, position) but not how the data is represented.
+One example is `theme_bw` which provides a white background.
+
+```{python}
+#| fig-align: center
+
+(ggplot(ind, aes('CPI', 'HDI', color='region')) +
+  geom_point() +
+  theme_bw())
+```
+
+Other complete themes are: `theme_classic`, `theme_minimal`, `theme_light`, `theme_dark`.
+
+## Axes
+
+The appearance of the axis titles can be controlled with the global variable `axis_title`,
+or independently for x and y using `axis_title_x` and `axis_title_y`.
+
+```{python}
+#| fig-align: center
+(ggplot(ind, aes('CPI', 'HDI', color='region')) +
+  geom_jitter() +
+  theme(axis_title=element_text(size=20, color='red')))
+```
+
+Similar for `axis_text`:
+```{python}
+#| fig-align: center
+(ggplot(ind, aes('CPI', 'HDI', color='region')) +
+  geom_jitter() +
+  theme(axis_text=element_text(size=20, color='blue')))
+```
+
+### Axis elements
+
+The axis elements control the appearance of the axes:
+
+Element             | Setter            | Description
+--------------------|-------------------|---------------------------
+axis_line           | `element_line()`  | line parallel to axis (hidden in default themes)
+axis_text           | `element_text()`  | tick labels
+axis_text_x         | `element_text()`  | x-axis tick labels
+axis_text_y         | `element_text()`  | y-axis tick labels
+axis_title          | `element_text()`  | axis titles
+axis_title_x        | `element_text()`  | x-axis title
+axis_title_y        | `element_text()`  | y-axis title
+axis_ticks          | `element_line()`  | axis tick marks
+axis_ticks_length   | `unit()`          | length of tick marks
+
+## Plot title
+
+The appearance of the plot's title can be controlled with the variable `plot_title`.
+```{python}
+#| fig-align: center
+(ggplot(ind, aes('CPI', 'HDI', color='region')) +
+  geom_jitter() +
+  ggtitle('CPI vs HDI') +
+  theme(plot_title=element_text(size=20, weight='bold')))
+```
+
+## Legend
+
+The appearance of the legend can be controlled with `legend_text` and `legend_title`.
+```{python}
+#| fig-align: center
+base = (ggplot(ind, aes('CPI', 'HDI', color='region')) +
+  geom_jitter())
+(base + theme(
+  legend_text=element_text(size=15),
+  legend_title=element_text(size=15, weight='bold'),
+  figure_size=(5,3)))
+```
+
+The legend elements control the appearance of all legends. You can also modify the appearance of individual legends by modifying the same elements in `guide_legend()` or `guide_colorbar()`.
+
+Element             | Setter                    | Description                                 |
+--------------------|---------------------------|---------------------------------------------|
+legend_background   |  `element_rect()`         | legend background                           |
+legend_key          |  `element_rect()`         | background of legend keys                   |
+legend_key_size     |  `unit()`                 | legend key size                             |
+legend_key_height   |  `unit()`                 | legend key height                           |
+legend_key_width    |  `unit()`                 | legend key width                            |
+legend_margin       |  `unit()`                 | legend margin                               |
+legend_text         |  `element_text()`         | legend labels                               |
+legend_text_align   |  0--1                     | legend label alignment (0 = right, 1 = left)|
+legend_title        |  `element_text()`         | legend name                                 |
+legend_title_align  |  0--1                     | legend name alignment (0 = right, 1 = left) |

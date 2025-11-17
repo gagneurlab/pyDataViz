@@ -11,15 +11,15 @@ language:
     edit: "Edit"
     chapter_name: "Chapter "
 
-    
+
 rmd_files: [
   "index.Rmd",
    "topic00_Introduction/script/script_00.Rmd",
    "topic01_R_Basics/script/script_01.qmd"
-   # "topic02_Data_Wrangling/script/script_02.Rmd",
-   # "topic03_Tidy_Data/script/script_03.Rmd",
-   # "topic04_Plotting-I/script/script_04.Rmd",
-   # "topic05_Plotting-II/script/script_05.Rmd",
+   "topic02_Data_Wrangling/script/script_02.Rmd",
+   "topic03_Tidy_Data/script/script_03.qmd",
+   "topic04_Plotting-I/script/script_04.qmd",
+   "topic05_Plotting-II/script/script_05.qmd",
    # "topic06_Plotting-III/script/script_06.Rmd",
    # "topic07_Statistical-Testing-I/script/script_07.Rmd",
    # "topic08_Statistical-Testing-II/script/script_08.Rmd",
@@ -29,7 +29,7 @@ rmd_files: [
    # "topic12_SupervisedLearning/script/script_12.Rmd",
    #  "appendix01_Data-Importing/script/appendix_01.Rmd",
    #  "appendix02_R_Basics/script/appendix_02.Rmd",
-   #  "appendix03_Plotting/script/appendix_03.Rmd",
-   #  "appendix04_Probabilities/script/appendix_04.Rmd"
+   "appendix03_Plotting/script/appendix_03.qmd",
+   "appendix04_Probabilities/script/appendix_04.qmd"
 ]
 before_chapter_script: "_common.R"
